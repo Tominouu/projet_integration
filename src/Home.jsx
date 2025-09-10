@@ -258,8 +258,6 @@ const MobileUnlockInterface = () => {
   const buttonGroupStyle = {
     display: 'flex',
     gap: '1rem',
-    width: '100%',
-    maxWidth: '300px'
   };
 
   const primaryButtonStyle = {
