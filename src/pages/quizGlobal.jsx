@@ -1,6 +1,7 @@
 function quizGlobal () {
 
-return (<div>Quiz Global</div>
+return (
+<h1>Quiz Global</h1>
 )
 
 }

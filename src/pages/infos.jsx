@@ -1,6 +1,7 @@
 function infos () {
 
-return (<div>infos supplémentaires</div>
+return (
+<h1>infos supplémentaires</h1>
 )
 
 }

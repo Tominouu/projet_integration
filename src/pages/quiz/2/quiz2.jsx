@@ -1,6 +1,6 @@
 import Quiz from 'react-quiz-component';
 
-import { quiz } from './quiz';
+import { quiz } from './source2.js';
 
 export default function quiz2() {
     return (
