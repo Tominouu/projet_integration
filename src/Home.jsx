@@ -19,6 +19,8 @@ const MobileUnlockInterface = () => {
     // Empêcher le scroll de la page
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
+    document.body.style.margin = '0px';
+    document.body.style.padding = '0px';
     
     // Vibration tactile si supportée
     const vibrate = () => {
