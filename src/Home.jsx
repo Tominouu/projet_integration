@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import bgImage from './assets/fond-home.jpg';
 
 const MobileUnlockInterface = () => {
@@ -9,6 +10,7 @@ const MobileUnlockInterface = () => {
   const containerRef = useRef(null);
   const startY = useRef(0);
   const currentY = useRef(0);
+  const navigate = useNavigate();
 
   // Image de fond modifiable
   const backgroundImage = bgImage;
@@ -395,8 +397,9 @@ const MobileUnlockInterface = () => {
                 e.target.style.backgroundColor = 'white';
                 e.target.style.transform = 'scale(1)';
               }}
+              onClick={() => navigate('/choix')}
             >
-              Start Your Adventure
+              Commencer
             </button>
             
             <button 
