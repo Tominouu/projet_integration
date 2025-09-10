@@ -6,7 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './index.css'
 import Choix from "./pages/Choice.jsx";
 import Infos from "./pages/Info.jsx";
-import QuizGlobal from "./pages/quizGlobal";
+import QuizGlobal from "./pages/quizGlobal.jsx";
+import Resultats from "./pages/Resultats.jsx";
 import App from './App.jsx'
 //import Home from "./Home";
 
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/choix" element={<Choix />} />
         <Route path="/infos" element={<Infos />} />
         <Route path="/quizglobal" element={<QuizGlobal />} />
+        <Route path="/resultats" element={<Resultats />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
