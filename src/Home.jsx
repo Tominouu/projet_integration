@@ -15,6 +15,11 @@ const MobileUnlockInterface = () => {
   const UNLOCK_THRESHOLD = -150; // Distance minimale pour déverrouiller
 
   useEffect(() => {
+    // Empêcher le scroll de la page
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    
     // Vibration tactile si supportée
     const vibrate = () => {
       if ('vibrate' in navigator) {
@@ -26,6 +31,13 @@ const MobileUnlockInterface = () => {
       vibrate();
       setTimeout(() => setShowContent(true), 300);
     }
+
+    return () => {
+      // Nettoyer au démontage
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
   }, [isUnlocked]);
 
   const handleTouchStart = (e) => {
