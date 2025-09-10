@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import bgImage from './assets/fond-home.jpg';
 
 const MobileUnlockInterface = () => {
   const [isUnlocked, setIsUnlocked] = useState(false);
@@ -10,7 +11,7 @@ const MobileUnlockInterface = () => {
   const currentY = useRef(0);
 
   // Image de fond modifiable
-  const backgroundImage = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80";
+  const backgroundImage = bgImage;
 
   const UNLOCK_THRESHOLD = -150; // Distance minimale pour déverrouiller
 
@@ -223,7 +224,7 @@ const MobileUnlockInterface = () => {
     right: 0,
     bottom: 0,
     zIndex: 20,
-    background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #db2777 100%)',
+    background: 'linear-gradient(135deg, #6C0F26 20%, #FFF5C2 100%)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -273,7 +274,7 @@ const MobileUnlockInterface = () => {
   const primaryButtonStyle = {
     width: '100%',
     backgroundColor: 'white',
-    color: '#7c3aed',
+    color: 'black',
     fontWeight: '600',
     padding: '1rem 2rem',
     borderRadius: '1rem',
@@ -334,11 +335,11 @@ const MobileUnlockInterface = () => {
       {/* Effet parallaxe sur le contenu principal */}
       <div style={contentContainerStyle}>
         <h1 style={titleStyle}>
-          Explore Your Favorite Journey
+          Bordeaux à travers les visages
         </h1>
         
         <p style={subtitleStyle}>
-          Let's Make Our Life Better
+          Entrez dans l'expérience
         </p>
 
         {/* Bouton de déverrouillage */}
@@ -361,7 +362,7 @@ const MobileUnlockInterface = () => {
           
           {/* Indicateur de progression */}
           <div style={indicatorStyle}>
-            {isDragging ? 'Keep going...' : 'Swipe up to unlock'}
+            {isDragging ? 'Encore' : 'Swipe'}
           </div>
         </div>
       </div>
