@@ -18,7 +18,7 @@ export default function Info() {
             </div>
 
             <div style={{ marginTop: 12 }}>
-                <Link to="/">Retour à l'accueil</Link>
+                <Link to="/choix">Retour à l'accueil</Link>
             </div>
         </div>
     )

@@ -1,18 +1,23 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import QuestionPager from './quiz/QuestionPager'
-import { quiz as Q1 } from './quiz/1/source1'
+import { quiz as Q1 } from './quiz/jsons/source1.js'
+import { quiz as Q2 } from './quiz/jsons/source2.js'
+import { quiz as Q3 } from './quiz/jsons/source3.js'
+import { quiz as Q4 } from './quiz/jsons/source4.js'
+import { quiz as Q5 } from './quiz/jsons/source5.js'
 // Les sources 2..5 sont vides pour l'instant; on met des placeholders minimaux
 const emptyQuiz = (title) => ({ quizTitle: title, quizSynopsis: '', questions: [] })
 
 export default function QuizGlobal(){
-    // Dans l’ordre: écouter, connaître, comprendre, se comprendre, communiquer
+    const navigate = useNavigate()
+    // Dans l’ordre: écouter, connaître, comprendre, se comprendre, communiqueré
     const parts = useMemo(() => ([
         Q1 || emptyQuiz('Écouter'),
-        emptyQuiz('Connaître'),
-        emptyQuiz('Comprendre'),
-        emptyQuiz('Se comprendre'),
-        emptyQuiz('Communiquer'),
+        Q2 || emptyQuiz('Connaître'),
+        Q3 || emptyQuiz('Comprendre'),
+        Q4 || emptyQuiz('Se comprendre'),
+        Q5 || emptyQuiz('Communiquer'),
     ]), [])
 
     const [pi, setPi] = useState(0) // part index
@@ -34,6 +39,9 @@ export default function QuizGlobal(){
             if (pi < parts.length - 1) {
                 setPi(pi + 1)
                 setKi(0)
+            } else {
+                // fin de la 5e partie: page de résultats
+                navigate('/resultats')
             }
         }
     }
