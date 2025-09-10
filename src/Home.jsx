@@ -238,17 +238,6 @@ const MobileUnlockInterface = () => {
     transition: 'all 1s ease-out'
   };
 
-  const iconContainerStyle = {
-    width: '96px',
-    height: '96px',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: '1.5rem',
-    backdropFilter: 'blur(10px)'
-  };
 
   const unlockedTitleStyle = {
     fontSize: '1.875rem',
@@ -266,7 +255,6 @@ const MobileUnlockInterface = () => {
 
   const buttonGroupStyle = {
     display: 'flex',
-    flexDirection: 'column',
     gap: '1rem',
     width: '100%',
     maxWidth: '300px'
@@ -371,12 +359,6 @@ const MobileUnlockInterface = () => {
       {/* Contenu déverrouillé */}
       <div style={unlockedContentStyle}>
         <div>
-          <div style={iconContainerStyle}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style={{color: 'white'}}>
-              <path d="M9 12L11 14L15 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-            </svg>
-          </div>
           
           <h2 style={unlockedTitleStyle}>
             Welcome to Your Journey!
