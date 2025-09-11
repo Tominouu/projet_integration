@@ -9,7 +9,7 @@ import { quiz as Q5 } from './quiz/jsons/source5.js'
 import { compareSelections, isMultiple, normalizeCorrectIndexes, toAnswerTexts } from './quiz/engine/utils'
 const emptyQuiz = (title) => ({ quizTitle: title, quizSynopsis: '', questions: [] })
 
-import '../pages/styles/quizGlobal.css'
+import '../pages/styles/quizglobal.css'
 
 export default function QuizGlobal(){
     const navigate = useNavigate()
