@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwind from 'tailwindcss';
 import path from 'node:path'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -12,4 +12,9 @@ export default defineConfig({
       'react-dom': path.resolve(process.cwd(), 'node_modules/react-dom'),
     },
   },
-})
+  css: {
+    postcss: {
+      plugins: [tailwind()],
+    },
+  },
+});
