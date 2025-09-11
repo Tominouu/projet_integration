@@ -280,7 +280,7 @@ const MobileUnlockInterface = () => {
     width: '100%',
     backgroundColor: '#6C0F26',
     color: 'white',
-    fontWeight: '800', // Épaissir le texte
+    fontWeight: '900', // Épaissir le texte
     padding: '1rem 2rem',
     borderRadius: '1rem',
     border: 'none',
@@ -295,12 +295,11 @@ const MobileUnlockInterface = () => {
     width: '100%',
     backgroundColor: '#6C0F26',
     color: 'white',
-    fontWeight: '800', // Épaissir le texte
+    fontWeight: '900', // Épaissir le texte
     padding: '0.75rem 2rem',
     borderRadius: '1rem',
     border: 'none',
     cursor: 'pointer',
-    backdropFilter: 'blur(10px)',
     transition: 'all 0.3s ease',
     fontSize: '0.8rem',
     fontFamily: '"Instrument Serif", serif',
