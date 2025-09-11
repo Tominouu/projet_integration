@@ -24,6 +24,8 @@ const EcouterCarousel = () => {
   ];
 
   const [current, setCurrent] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
 
   const prevSlide = () => {
     setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
@@ -33,10 +35,40 @@ const EcouterCarousel = () => {
     setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   };
 
+  // ----- Swipe detection -----
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const minSwipeDistance = 50;
+
+    if (distance > minSwipeDistance) {
+      nextSlide();
+    }
+    if (distance < -minSwipeDistance) {
+      prevSlide();
+    }
+
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
   return (
     <div className="p-6 max-w-lg mx-auto">
       {/* Image */}
-      <div className="mb-4 relative">
+      <div
+        className="mb-4 relative"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <img
           src={slides[current].image}
           alt={slides[current].title}
@@ -61,12 +93,12 @@ const EcouterCarousel = () => {
         style={{ backgroundColor: "#6C0F26" }}
       >
         <h2
-          className="text-2xl font-extrabold mb-3 tracking-wide "
-          style={{ color: "#fff", fontFamily: "DM Serif Text" }}
+          className="text-2xl font-extrabold mb-3 tracking-wide"
+          style={{ color: "#ffffffff" }}
         >
           {slides[current].title}
         </h2>
-        <p className="text-base leading-relaxed" style={{ color: "#fff" }}>
+        <p className="text-base leading-relaxed" style={{ color: "#ffffffff" }}>
           {slides[current].text}
         </p>
       </div>
@@ -100,12 +132,7 @@ const ScrollingAlphabet = () => {
     { letter: "E", title: "Écouter", id: "ecouter", color: "#6C0F26" },
     { letter: "C", title: "Connaître", id: "connaitre", color: "#6C0F26" },
     { letter: "C", title: "Comprendre", id: "comprendre", color: "#6C0F26" },
-    {
-      letter: "S",
-      title: "Se comprendre",
-      id: "se-comprendre",
-      color: "#6C0F26",
-    },
+    { letter: "S", title: "Se comprendre", id: "se-comprendre", color: "#6C0F26" },
     { letter: "C", title: "Communiquer", id: "communiquer", color: "#6C0F26" },
   ];
 
@@ -124,12 +151,11 @@ const ScrollingAlphabet = () => {
     <div className="min-h-screen" style={{ backgroundColor: "#FFEBD4" }}>
       <div className="max-w-4xl mx-auto px-6 py-12">
         <h1
-          className="text-6xl md:text-5xl font-extrabold text-center mb-16 relative"
-          style={{ color: "#6C0F26", fontFamily: "Instrument Serif" }}
+          className="text-5xl md:text-6xl font-extrabold text-center mb-16"
+          style={{ color: "#6C0F26" }}
         >
           Guide de Communication
         </h1>
-
 
         {sections.map((section) => (
           <section
@@ -189,7 +215,7 @@ const ScrollingAlphabet = () => {
 };
 
 // ------------------ MENU ALPHABET ------------------
-const AlphabetNavigation = ({ sections, onLetterClick }) => {
+const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
   const [hoveredSection, setHoveredSection] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const alphabetRef = useRef(null);
@@ -277,17 +303,23 @@ const AlphabetNavigation = ({ sections, onLetterClick }) => {
       >
         {sections.map((section) => {
           const isHovered = hoveredSection?.id === section.id;
+          const isSelected = selectedSection?.id === section.id;
           return (
             <button
               key={section.id}
               onTouchStart={(e) => handleTouchStart(e, section)}
-              className={`w-9 h-9 flex items-center justify-center text-base font-bold rounded-lg select-none transition-all duration-200 shadow-md`}
+              className="w-9 h-9 flex items-center justify-center text-base font-bold rounded-lg select-none transition-all duration-200 shadow-md"
               style={{
-                backgroundColor: isHovered ? section.color : "#FFF5C2",
-                color: isHovered ? "#FFF5C2" : "#101434",
-                boxShadow: isHovered
-                  ? "0 4px 10px rgba(0,0,0,0.3)"
-                  : "0 2px 6px rgba(0,0,0,0.1)",
+                backgroundColor: isHovered
+                  ? section.color
+                  : isSelected
+                  ? "#6C0F26"
+                  : "#ffffffff",
+                color: isHovered || isSelected ? "#FFF5C2" : "#101434",
+                boxShadow:
+                  isHovered || isSelected
+                    ? "0 4px 10px rgba(0,0,0,0.3)"
+                    : "0 2px 6px rgba(0,0,0,0.1)",
               }}
             >
               {section.letter}
