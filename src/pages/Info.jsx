@@ -1,23 +1,26 @@
 import React, { useState, useRef, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import bckimg from "../assets/panorama.jpeg";
 
 // ------------------ CARROUSEL ÉCOUTER ------------------
 const EcouterCarousel = () => {
   const slides = [
     {
       title: "Les quais",
-      text: "Les quais de Bordeaux, « port de la Lune », mêlent mémoire des négociants et dockers d’hier aux joggeurs, cyclistes et promeneurs d’aujourd’hui. Lieu de passage et de vie, ils relient la ville à son fleuve et au monde.",
+      text: "Les quais de Bordeaux, « port de la Lune », mêlent mémoire des négociants et dockers d’hier aux joggeurs, cyclistes et promeneurs d’aujourd’hui.",
       image:
         "https://www.sncf-connect.com/assets/styles/scale_max_width_961/public/media/2022-10/bordeaux-miroir-d-eau.jpg?itok=EF24q8ma",
     },
     {
       title: "La Garonne",
-      text: "Fleuve puissant et imprévisible, la Garonne rythme Bordeaux par ses marées, ses crues et son mascaret. Elle relie l’histoire de la cité à l’estuaire et à l’océan.",
+      text: "Fleuve puissant et imprévisible, la Garonne rythme Bordeaux par ses marées, ses crues et son mascaret.",
       image:
         "https://www.bougerabordeaux.com/wp-content/uploads/2025/07/garonne-scaled-1.jpeg",
     },
     {
       title: "Les capucins",
-      text: "Le marché des Capucins, surnommé « le ventre de Bordeaux », vibre de voix, d’odeurs et de couleurs. C’est le rendez-vous populaire où se croisent maraîchers, habitants et voyageurs.",
+      text: "Le marché des Capucins, surnommé « le ventre de Bordeaux », vibre de voix, d’odeurs et de couleurs.",
       image:
         "https://media.sudouest.fr/13081786/1000x625/sudouest-photo-1-32154012-1600.jpg?v=1700822902",
     },
@@ -35,27 +38,13 @@ const EcouterCarousel = () => {
     setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   };
 
-  // ----- Swipe detection -----
-  const handleTouchStart = (e) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
+  const handleTouchStart = (e) => setTouchStart(e.targetTouches[0].clientX);
+  const handleTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
-    const minSwipeDistance = 50;
-
-    if (distance > minSwipeDistance) {
-      nextSlide();
-    }
-    if (distance < -minSwipeDistance) {
-      prevSlide();
-    }
-
+    if (distance > 50) nextSlide();
+    if (distance < -50) prevSlide();
     setTouchStart(null);
     setTouchEnd(null);
   };
@@ -72,7 +61,8 @@ const EcouterCarousel = () => {
         <img
           src={slides[current].image}
           alt={slides[current].title}
-          className="w-full h-56 object-cover rounded-2xl shadow-lg"
+          className="w-full h-56 object-cover rounded-2xl shadow-lg cursor-pointer"
+          onClick={nextSlide} // 👉 clic sur l’image = passe au suivant
         />
         {/* Indicateurs */}
         <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
@@ -92,13 +82,10 @@ const EcouterCarousel = () => {
         className="p-6 rounded-xl shadow-md"
         style={{ backgroundColor: "#6C0F26" }}
       >
-        <h2
-          className="text-2xl font-extrabold mb-3 tracking-wide"
-          style={{ color: "#ffffffff" }}
-        >
+        <h2 className="text-2xl font-extrabold mb-3 text-white tracking-wide">
           {slides[current].title}
         </h2>
-        <p className="text-base leading-relaxed" style={{ color: "#ffffffff" }}>
+        <p className="text-base leading-relaxed text-white">
           {slides[current].text}
         </p>
       </div>
@@ -124,16 +111,57 @@ const EcouterCarousel = () => {
   );
 };
 
+
+// ------------------ PANORAMA CONNAÎTRE ------------------
+const PanoramaScroller = () => {
+  const panoRef = useRef(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const pano = panoRef.current;
+
+    gsap.to(pano, {
+      backgroundPosition: "100% center",
+      ease: "none",
+      scrollTrigger: {
+        trigger: pano,
+        start: "center center", // l’image se centre dans la fenêtre
+        end: "+=2000",
+        scrub: true,
+        pin: true,              // reste fixé
+        pinSpacing: true,       // laisse l’espace dans la page
+      },
+    });
+
+    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+  }, []);
+
+  return (
+    <div
+      ref={panoRef}
+      className="w-full"
+      style={{
+        height: "90vh",
+        backgroundImage: `url(${bckimg})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "0% center",
+      }}
+    ></div>
+  );
+};
+
+
 // ------------------ PAGE PRINCIPALE ------------------
 const ScrollingAlphabet = () => {
   const [selectedSection, setSelectedSection] = useState(null);
 
   const sections = [
-    { letter: "E", title: "Écouter", id: "ecouter", color: "#6C0F26" },
-    { letter: "C", title: "Connaître", id: "connaitre", color: "#6C0F26" },
-    { letter: "C", title: "Comprendre", id: "comprendre", color: "#6C0F26" },
-    { letter: "S", title: "Se comprendre", id: "se-comprendre", color: "#6C0F26" },
-    { letter: "C", title: "Communiquer", id: "communiquer", color: "#6C0F26" },
+    { letter: "E", title: "Écouter", id: "ecouter" },
+    { letter: "C", title: "Connaître", id: "connaitre" },
+    { letter: "C", title: "Comprendre", id: "comprendre" },
+    { letter: "S", title: "Se comprendre", id: "se-comprendre" },
+    { letter: "C", title: "Communiquer", id: "communiquer" },
   ];
 
   const scrollToSection = (sectionId, smooth = true) => {
@@ -158,40 +186,31 @@ const ScrollingAlphabet = () => {
         </h1>
 
         {sections.map((section) => (
-          <section
-            key={section.id}
-            id={section.id}
-            className="mb-20 scroll-mt-24"
-          >
+          <section key={section.id} id={section.id} className="mb-20 scroll-mt-24">
             <div className="px-4">
               {/* Titre section */}
               <div className="flex items-center mb-6">
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4 shadow-md"
-                  style={{ backgroundColor: section.color }}
+                  style={{ backgroundColor: "#6C0F26" }}
                 >
                   {section.letter}
                 </div>
                 <h2
                   className="text-3xl font-bold relative"
-                  style={{ color: section.color }}
+                  style={{ color: "#6C0F26" }}
                 >
                   {section.title}
-                  <span
-                    className="block w-16 h-1 mt-1 rounded-full"
-                    style={{ backgroundColor: section.color }}
-                  ></span>
                 </h2>
               </div>
 
               {/* Contenu spécifique */}
               {section.id === "ecouter" ? (
                 <EcouterCarousel />
+              ) : section.id === "connaitre" ? (
+                <PanoramaScroller />
               ) : (
-                <div
-                  className="leading-relaxed text-lg"
-                  style={{ color: "#101434" }}
-                >
+                <div className="leading-relaxed text-lg" style={{ color: "#101434" }}>
                   <p>
                     Ceci est un paragraphe d’exemple pour la section{" "}
                     <b>{section.title}</b>. Vous pouvez personnaliser ce texte
@@ -217,109 +236,28 @@ const ScrollingAlphabet = () => {
 // ------------------ MENU ALPHABET ------------------
 const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
   const [hoveredSection, setHoveredSection] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const alphabetRef = useRef(null);
-  const pressedSection = useRef(null);
-  const pressTimer = useRef(null);
-  const longPressTriggered = useRef(false);
-
-  useEffect(() => {
-    if (isDragging) {
-      document.body.style.overflow = "hidden";
-      document.body.style.touchAction = "none";
-    } else {
-      document.body.style.overflow = "";
-      document.body.style.touchAction = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-      document.body.style.touchAction = "";
-    };
-  }, [isDragging]);
-
-  const triggerHaptic = () => {
-    if (navigator.vibrate) {
-      navigator.vibrate(30);
-    }
-  };
-
-  const startPress = (section) => {
-    pressedSection.current = section;
-    pressTimer.current = setTimeout(() => {
-      longPressTriggered.current = true;
-      setIsDragging(true);
-      setHoveredSection(section);
-      triggerHaptic();
-    }, 300);
-  };
-
-  const cancelPress = () => clearTimeout(pressTimer.current);
-
-  const handleTouchStart = (e, section) => {
-    e.preventDefault();
-    longPressTriggered.current = false;
-    startPress(section);
-  };
-
-  const handleTouchMove = (e) => {
-    if (!isDragging || !alphabetRef.current) return;
-    const touch = e.touches[0];
-    const rect = alphabetRef.current.getBoundingClientRect();
-    const relativeY = touch.clientY - rect.top;
-    const sectionHeight = 40;
-    const sectionIndex = Math.floor(relativeY / sectionHeight);
-    if (sectionIndex >= 0 && sectionIndex < sections.length) {
-      const newSection = sections[sectionIndex];
-      if (hoveredSection?.id !== newSection.id) {
-        setHoveredSection(newSection);
-        onLetterClick(newSection.id, false);
-        triggerHaptic();
-      }
-    }
-  };
-
-  const handleTouchEnd = () => {
-    cancelPress();
-    if (!longPressTriggered.current && pressedSection.current) {
-      onLetterClick(pressedSection.current.id, true);
-    } else if (isDragging && hoveredSection) {
-      onLetterClick(hoveredSection.id, true);
-    }
-    setIsDragging(false);
-    setHoveredSection(null);
-    pressedSection.current = null;
-  };
 
   return (
-    <div
-      className="fixed top-1/2 transform -translate-y-1/2 z-50"
-      style={{ right: "4px" }}
-    >
-      <div
-        ref={alphabetRef}
-        className="flex flex-col items-center space-y-3 py-4 px-2"
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
+    <div className="fixed right-2 top-1/2 transform -translate-y-1/2 z-50">
+      <div className="flex flex-col items-center space-y-3 py-4 px-2">
         {sections.map((section) => {
+          const isActive = selectedSection?.id === section.id;
           const isHovered = hoveredSection?.id === section.id;
-          const isSelected = selectedSection?.id === section.id;
+
           return (
             <button
               key={section.id}
-              onTouchStart={(e) => handleTouchStart(e, section)}
-              className="w-9 h-9 flex items-center justify-center text-base font-bold rounded-lg select-none transition-all duration-200 shadow-md"
+              onClick={() => onLetterClick(section.id, true)}
+              onMouseEnter={() => setHoveredSection(section)}
+              onMouseLeave={() => setHoveredSection(null)}
+              className="w-9 h-9 flex items-center justify-center text-base font-bold rounded-lg select-none transition-all duration-200"
               style={{
-                backgroundColor: isHovered
-                  ? section.color
-                  : isSelected
+                backgroundColor: isActive
                   ? "#6C0F26"
-                  : "#ffffffff",
-                color: isHovered || isSelected ? "#FFF5C2" : "#101434",
-                boxShadow:
-                  isHovered || isSelected
-                    ? "0 4px 10px rgba(0,0,0,0.3)"
-                    : "0 2px 6px rgba(0,0,0,0.1)",
+                  : isHovered
+                  ? "#FF7497"
+                  : "#FFF5C2",
+                color: isActive || isHovered ? "#FFF5C2" : "#101434",
               }}
             >
               {section.letter}
