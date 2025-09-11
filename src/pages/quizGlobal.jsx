@@ -74,7 +74,7 @@ export default function QuizGlobal(){
         }
     }
 
-    // autoskip mais useless normalement
+    // autoskip mais useless normalement si les jsons sont pas foirés
 
     useEffect(() => {
         if (!questionObj) {
@@ -124,14 +124,15 @@ export default function QuizGlobal(){
                     </div>
                 )
             })()}
-            <div className="quiz-info">Partie {pi + 1} / {parts.length} — Question {ki + 1} / {part?.questions?.length || 0}</div>
+            <div className="quiz-info-progress">Partie {pi + 1} / {parts.length}</div>
+            <div className="quiz-info">
+                Q{ki + 1} :
+                {' '}
+                {questionObj?.question ? questionObj.question : 'Nom de la question'}
+            </div>
 
             <div className="quiz-card" style={{ marginTop: 8 }}>
                 <QuestionPager questionObj={questionObj} onSubmit={submitAnswer} />
-            </div>
-
-            <div style={{ marginTop: 12 }}>
-                <Link to="/choix">↩ Retour</Link>
             </div>
         </div>
     )
