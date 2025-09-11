@@ -1,0 +1,31 @@
+.results-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    text-align: center;
+}
+
+.results-title h1 {
+    font-size: 32px;
+    font-family: 'inter', sans-serif;
+    color: #6C1227;
+    font-weight: 600;
+}
+
+.results-title p {
+    font-size: 96px;
+    font-family: 'DM Sans', serif;
+    color: #101434;
+    font-weight: 700;
+    margin: 0;
+}
+
+.quiz-title {
+    font-family: 'inter', sans-serif;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 32px 0 16px;
+    color: #6C1227;}
