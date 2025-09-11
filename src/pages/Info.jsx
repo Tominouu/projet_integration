@@ -88,8 +88,7 @@ const ScrollingAlphabet = () => {
                 {section.id === "communiquer" && (
                   <p>
                     Communiquer, c’est créer un échange ouvert et sincère où
-                    chacun peut exprimer ses idées, ses ressentis et ses
-                    besoins.
+                    chacun peut exprimer ses idées, ses ressentis et ses besoins.
                   </p>
                 )}
               </div>
@@ -150,23 +149,30 @@ const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
     }
   };
 
-  // ⚡ Bloquer le scroll pendant le drag
+  // ⚡ Bloquer le scroll + overscroll pendant le drag
   useEffect(() => {
     if (isDragging) {
       document.body.style.overflow = "hidden";
       document.body.style.touchAction = "none";
+      document.documentElement.style.overscrollBehavior = "none";
+      document.body.style.overscrollBehavior = "none";
+      const blockScroll = (e) => {
+        if (isDragging && e.cancelable) e.preventDefault();
+      };
+      window.addEventListener("touchmove", blockScroll, { passive: false });
+      return () => {
+        window.removeEventListener("touchmove", blockScroll);
+      };
     } else {
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
+      document.documentElement.style.overscrollBehavior = "";
+      document.body.style.overscrollBehavior = "";
     }
-    return () => {
-      document.body.style.overflow = "";
-      document.body.style.touchAction = "";
-    };
   }, [isDragging]);
 
   // ------------------------------
-  // Touch events (mobile)
+  // Touch events
   // ------------------------------
   const handleTouchStart = (e, section) => {
     cancelPress();
@@ -198,7 +204,7 @@ const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
   };
 
   // ------------------------------
-  // Mouse events (desktop)
+  // Mouse events
   // ------------------------------
   const handleMouseDown = (e, section) => {
     if (e.button !== 0) return;
@@ -229,61 +235,70 @@ const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
   };
 
   return (
-    <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50">
-      <div
-        ref={alphabetRef}
-        className="flex flex-col items-center space-y-2 py-4 px-2"
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        {sections.map((section) => {
-          const isHovered = hoveredSection?.id === section.id;
-          const isSelected = selectedSection?.id === section.id;
-          const showTooltip = isHovered && !isSelected;
+    <>
+      {/* Overlay semi-transparent pendant le drag */}
+      {isDragging && (
+        <div className="fixed inset-0 bg-black bg-opacity-10 z-40 pointer-events-none"></div>
+      )}
 
-          return (
-            <div key={section.id} className="relative flex items-center">
-              <button
-                onMouseDown={(e) => handleMouseDown(e, section)}
-                onTouchStart={(e) => handleTouchStart(e, section)}
-                className={`
-                  w-8 h-8 flex items-center justify-center text-sm font-bold
-                  transition-all duration-300 ease-in-out rounded-lg select-none
-                  ${isHovered && !isSelected ? "opacity-0" : ""}
-                `}
-                style={{
-                  backgroundColor: isSelected ? "#6C0F26" : "#FFF5C2",
-                  color: isSelected ? "#FFF5C2" : "#101434",
-                  boxShadow: isSelected ? "0 4px 10px rgba(0,0,0,0.3)" : "none",
-                }}
-              >
-                {section.letter}
-              </button>
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50">
+        <div
+          ref={alphabetRef}
+          className="flex flex-col items-center space-y-2 py-4 px-2"
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {sections.map((section) => {
+            const isHovered = hoveredSection?.id === section.id;
+            const isSelected = selectedSection?.id === section.id;
+            const showTooltip = isHovered && !isSelected;
 
-              {showTooltip && (
-                <div
+            return (
+              <div key={section.id} className="relative flex items-center">
+                <button
+                  onMouseDown={(e) => handleMouseDown(e, section)}
+                  onTouchStart={(e) => handleTouchStart(e, section)}
                   className={`
-                    absolute right-full mr-3 bg-white bg-opacity-95 backdrop-blur-sm rounded-lg px-3 py-1
-                    shadow-lg border whitespace-nowrap z-10
-                    transition-all duration-200 ease-in-out
+                    w-8 h-8 flex items-center justify-center text-sm font-bold
+                    transition-all duration-300 ease-in-out rounded-lg select-none
+                    ${isHovered && !isSelected ? "opacity-0" : ""}
                   `}
-                  style={{ borderColor: "#FFF5C2" }}
+                  style={{
+                    backgroundColor: isSelected ? "#6C0F26" : "#FFF5C2",
+                    color: isSelected ? "#FFF5C2" : "#101434",
+                    boxShadow: isSelected
+                      ? "0 4px 10px rgba(0,0,0,0.3)"
+                      : "none",
+                  }}
                 >
-                  <span
-                    className="text-sm font-medium"
-                    style={{ color: "#6C0F26" }}
+                  {section.letter}
+                </button>
+
+                {showTooltip && (
+                  <div
+                    className={`
+                      absolute right-full mr-3 bg-white bg-opacity-95 backdrop-blur-sm rounded-lg px-3 py-1
+                      shadow-lg border whitespace-nowrap z-10
+                      transition-all duration-200 ease-in-out
+                    `}
+                    style={{ borderColor: "#FFF5C2" }}
                   >
-                    {section.title}
-                  </span>
-                </div>
-              )}
-            </div>
-          );
-        })}
+                    <span
+                      className="text-sm font-medium"
+                      style={{ color: "#6C0F26" }}
+                    >
+                      {section.title}
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
