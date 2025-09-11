@@ -9,6 +9,8 @@ import { quiz as Q5 } from './quiz/jsons/source5.js'
 import { compareSelections, isMultiple, normalizeCorrectIndexes, toAnswerTexts } from './quiz/engine/utils'
 const emptyQuiz = (title) => ({ quizTitle: title, quizSynopsis: '', questions: [] })
 
+import '../pages/styles/quizGlobal.css'
+
 export default function QuizGlobal(){
     const navigate = useNavigate()
     const parts = useMemo(() => ([
@@ -91,10 +93,40 @@ export default function QuizGlobal(){
 
     return (
         <div style={{ padding: 16, maxWidth: 900, margin: '0 auto', fontFamily: 'system-ui' }}>
-            <h1>Quiz Vidéo</h1>
-            <div style={{ fontSize: 12, opacity: .7, marginBottom: 8 }}>Partie {pi + 1} / {parts.length} — Question {ki + 1} / {part?.questions?.length || 0}</div>
+            {(() => {
+                const answered = (resultsRef.current.correct || 0) + (resultsRef.current.incorrect || 0)
+                const pct = totalQuestions ? Math.min(100, Math.max(0, Math.round((answered / totalQuestions) * 100))) : 0
+                return (
+                    <div style={{ margin: '8px 0 12px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#555', marginBottom: 6 }}>
+                        </div>
+                        <div
+                            role="progressbar"
+                            aria-valuenow={pct}
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                            style={{
+                                height: 8,
+                                background: '#fff',
+                                borderRadius: 999,
+                                overflow: 'hidden'
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: pct + '%',
+                                    height: '100%',
+                                    background: '#6C1227',
+                                    transition: 'width 200ms ease'
+                                }}
+                            />
+                        </div>
+                    </div>
+                )
+            })()}
+            <div className="quiz-info">Partie {pi + 1} / {parts.length} — Question {ki + 1} / {part?.questions?.length || 0}</div>
 
-            <div style={{ border: '1px solid #ddd', borderRadius: 8, padding: 12, background: '#fff' }}>
+            <div className="quiz-card" style={{ marginTop: 8 }}>
                 <QuestionPager questionObj={questionObj} onSubmit={submitAnswer} />
             </div>
 
