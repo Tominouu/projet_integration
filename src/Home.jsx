@@ -244,9 +244,9 @@ const MobileUnlockInterface = () => {
 
   // Ajoute ce style :
   const glassContainerStyle = {
-    background: 'rgba(255, 255, 255, 0.18)',
+    background: 'rgba(255, 245, 194, 0.5)',
     borderRadius: '2rem',
-    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+    boxShadow: '0 8px 32px 0 rgba(40, 40, 40, 0.37)',
     backdropFilter: 'blur(12px)',
     WebkitBackdropFilter: 'blur(12px)',
     border: 'Opx',
@@ -256,7 +256,7 @@ const MobileUnlockInterface = () => {
   };
 
   const unlockedTitleStyle = {
-    fontFamily: '"Instrument Serif", "DM Serif Text", serif',
+    fontFamily: '"DM Serif Text", serif', // Modifié ici
     fontSize: '1.875rem',
     fontWeight: 'bold',
     color: 'white',
@@ -278,29 +278,33 @@ const MobileUnlockInterface = () => {
 
   const primaryButtonStyle = {
     width: '100%',
-    backgroundColor: 'white',
-    color: 'black',
-    fontWeight: '600',
+    backgroundColor: '#6C0F26',
+    color: 'white',
+    fontWeight: '800', // Épaissir le texte
     padding: '1rem 2rem',
     borderRadius: '1rem',
     border: 'none',
     cursor: 'pointer',
     transition: 'all 0.3s ease',
-    fontSize: '1rem'
+    fontSize: '0.8rem',
+    fontFamily: '"Instrument Serif", serif',
+    letterSpacing: '0.03em' // Optionnel pour accentuer l'effet
   };
 
   const secondaryButtonStyle = {
     width: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: '#6C0F26',
     color: 'white',
-    fontWeight: '600',
+    fontWeight: '800', // Épaissir le texte
     padding: '0.75rem 2rem',
     borderRadius: '1rem',
     border: 'none',
     cursor: 'pointer',
     backdropFilter: 'blur(10px)',
     transition: 'all 0.3s ease',
-    fontSize: '1rem'
+    fontSize: '0.8rem',
+    fontFamily: '"Instrument Serif", serif',
+    letterSpacing: '0.03em' // Optionnel pour accentuer l'effet
   };
 
   const indicatorsStyle = {
@@ -376,18 +380,25 @@ const MobileUnlockInterface = () => {
       <div style={unlockedContentStyle}>
         <div style={glassContainerStyle}>
           <h2 style={unlockedTitleStyle}>
-            CHOISIR UNE OPTION !
+            CHOISIR UNE OPTION
           </h2>
           <div style={buttonGroupStyle}>
             <button 
               style={primaryButtonStyle}
-              onMouseEnter={(e) => {
-                e.target.style.backgroundColor = '#f3f4f6';
+              onMouseEnter={e => {
+                // Prend l'apparence du bouton "clair"
+                e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                e.target.style.color = '#6C0F26';
                 e.target.style.transform = 'scale(1.05)';
+                e.target.style.fontFamily = '"Instrument Serif", serif';
+                e.target.style.boxShadow = '0 8px 32px 0 rgba(40, 40, 40, 0.37)';
               }}
-              onMouseLeave={(e) => {
-                e.target.style.backgroundColor = 'white';
+              onMouseLeave={e => {
+                // Reprend l'apparence bordeaux
+                e.target.style.backgroundColor = '#6C0F26';
+                e.target.style.color = 'white';
                 e.target.style.transform = 'scale(1)';
+                e.target.style.fontFamily = '"Instrument Serif", serif';
               }}
               onClick={() => navigate('/choix')}
             >
@@ -396,11 +407,20 @@ const MobileUnlockInterface = () => {
             <button 
               onClick={reset}
               style={secondaryButtonStyle}
-              onMouseEnter={(e) => {
+              onMouseEnter={e => {
+                // Prend l'apparence du bouton "clair"
                 e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                e.target.style.color = '#6C0F26';
+                e.target.style.transform = 'scale(1.05)';
+                e.target.style.fontFamily = '"Instrument Serif", serif';
+                e.target.style.boxShadow = '0 8px 32px 0 rgba(40, 40, 40, 0.37)';
               }}
-              onMouseLeave={(e) => {
-                e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+              onMouseLeave={e => {
+                // Reprend l'apparence bordeaux
+                e.target.style.backgroundColor = '#6C0F26';
+                e.target.style.color = 'white';
+                e.target.style.transform = 'scale(1)';
+                e.target.style.fontFamily = '"Instrument Serif", serif';
               }}
             >
               + d'infos
