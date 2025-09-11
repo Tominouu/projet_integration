@@ -158,6 +158,7 @@ const MobileUnlockInterface = () => {
   };
 
   const titleStyle = {
+    fontFamily: '"Instrument Serif", "DM Serif Text", serif',
     fontSize: '2.5rem',
     fontWeight: 'bold',
     color: 'white',
@@ -169,6 +170,7 @@ const MobileUnlockInterface = () => {
   };
 
   const subtitleStyle = {
+    fontFamily: '"Inter", sans-serif',
     fontSize: '1.25rem',
     color: 'rgba(255, 255, 255, 0.9)',
     fontWeight: '300',
@@ -240,8 +242,21 @@ const MobileUnlockInterface = () => {
     transition: 'all 1s ease-out'
   };
 
+  // Ajoute ce style :
+  const glassContainerStyle = {
+    background: 'rgba(255, 255, 255, 0.18)',
+    borderRadius: '2rem',
+    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+    backdropFilter: 'blur(12px)',
+    WebkitBackdropFilter: 'blur(12px)',
+    border: 'Opx',
+    padding: '2.5rem 2rem',
+    maxWidth: '400px',
+    margin: '0 auto'
+  };
 
   const unlockedTitleStyle = {
+    fontFamily: '"Instrument Serif", "DM Serif Text", serif',
     fontSize: '1.875rem',
     fontWeight: 'bold',
     color: 'white',
@@ -249,6 +264,7 @@ const MobileUnlockInterface = () => {
   };
 
   const unlockedTextStyle = {
+    fontFamily: '"Inter", sans-serif',
     color: 'rgba(255, 255, 255, 0.9)',
     fontSize: '1.125rem',
     marginBottom: '2rem',
@@ -323,7 +339,7 @@ const MobileUnlockInterface = () => {
 
       {/* Effet parallaxe sur le contenu principal */}
       <div style={contentContainerStyle}>
-        <h1 className="title-serif" style={titleStyle}>
+        <h1 style={titleStyle}>
           Bordeaux à travers les visages
         </h1>
         
@@ -358,19 +374,12 @@ const MobileUnlockInterface = () => {
 
       {/* Contenu déverrouillé */}
       <div style={unlockedContentStyle}>
-        <div>
-          
+        <div style={glassContainerStyle}>
           <h2 style={unlockedTitleStyle}>
-            Welcome to Your Journey!
+            CHOISIR UNE OPTION !
           </h2>
-          
-          <p style={unlockedTextStyle}>
-            You've successfully unlocked your adventure. Let's explore new possibilities together and make every moment count.
-          </p>
-          
           <div style={buttonGroupStyle}>
             <button 
-              className="button-serif"
               style={primaryButtonStyle}
               onMouseEnter={(e) => {
                 e.target.style.backgroundColor = '#f3f4f6';
@@ -382,11 +391,9 @@ const MobileUnlockInterface = () => {
               }}
               onClick={() => navigate('/choix')}
             >
-              Commencer
+              lancer le quiz
             </button>
-            
             <button 
-              className="button-serif"
               onClick={reset}
               style={secondaryButtonStyle}
               onMouseEnter={(e) => {
@@ -396,7 +403,7 @@ const MobileUnlockInterface = () => {
                 e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
               }}
             >
-              Reset Experience
+              + d'infos
             </button>
           </div>
         </div>
