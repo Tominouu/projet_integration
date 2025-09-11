@@ -41,7 +41,45 @@ const ScrollingAlphabet = () => {
                 </h2>
               </div>
               <div className="text-gray-600 leading-relaxed">
-                {/* contenu section */}
+                {section.id === "ecouter" && (
+                  <p>
+                    Savoir écouter, c’est offrir à l’autre un espace où il se
+                    sent entendu et respecté. Cela implique une attention réelle
+                    et une absence de jugement.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, officia totam distinctio laudantium nesciunt harum itaque consequatur possimus perspiciatis nihil accusantium, nam recusandae. Itaque, tempora. Dolores repellat repellendus officia molestiae!
+                  </p>
+                )}
+                {section.id === "connaitre" && (
+                  <p>
+                    Connaître une personne, c’est aller au-delà des apparences
+                    et prendre le temps de découvrir ses valeurs, ses besoins et
+                    son histoire.
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, aut! Amet soluta excepturi voluptatibus ad ipsum, itaque mollitia fugiat animi quibusdam esse officia corporis deserunt, architecto dolorum minima tempora error.
+                  </p>
+                )}
+                {section.id === "comprendre" && (
+                  <p>
+                    Comprendre, c’est chercher à interpréter correctement ce que
+                    l’autre exprime, en tenant compte de ses émotions et de son
+                    contexte.
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum ratione, ut totam cum temporibus praesentium accusamus esse laboriosam ab dignissimos atque? Nulla rem debitis ipsa adipisci exercitationem ipsam velit nemo.
+                  </p>
+                )}
+                {section.id === "se-comprendre" && (
+                  <p>
+                    Se comprendre soi-même permet de mieux gérer ses émotions et
+                    de communiquer plus clairement ses attentes et ses limites.
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Similique, neque libero perspiciatis consequatur impedit saepe maiores totam amet tenetur cum quas architecto facilis molestias quae eligendi delectus vel quod inventore.
+                  </p>
+                )}
+                {section.id === "communiquer" && (
+                  <p>
+                    Communiquer, c’est créer un échange ouvert et sincère où
+                    chacun peut exprimer ses idées, ses ressentis et ses
+                    besoins.
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa, alias illum. Mollitia facere sunt maiores voluptatem unde sapiente dolorem. Consequuntur, rerum maxime perspiciatis doloribus eveniet voluptates tenetur obcaecati minima. Fugiat!
+                  </p>
+                )}
               </div>
             </div>
           </section>
@@ -60,7 +98,6 @@ const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
   const [hoveredSection, setHoveredSection] = useState(null);
   const alphabetRef = useRef(null);
 
-  // Gestion du drag / scroll latéral
   useEffect(() => {
     const handleMove = (clientY) => {
       if (!alphabetRef.current) return;
