@@ -23,9 +23,15 @@ const ScrollingAlphabet = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
+    <div
+      className="min-h-screen"
+      style={{ background: "linear-gradient(135deg, #FFF5C2, #ffffff)" }}
+    >
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-center mb-12 text-gray-800">
+        <h1
+          className="text-3xl font-bold text-center mb-12"
+          style={{ color: "#101434" }}
+        >
           Guide de Communication
         </h1>
         {sections.map((section) => (
@@ -36,14 +42,22 @@ const ScrollingAlphabet = () => {
           >
             <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4"
+                  style={{
+                    background: "linear-gradient(135deg, #6C0F26, #101434)",
+                  }}
+                >
                   {section.letter}
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800">
+                <h2
+                  className="text-2xl font-bold"
+                  style={{ color: "#101434" }}
+                >
                   {section.title}
                 </h2>
               </div>
-              <div className="text-gray-600 leading-relaxed">
+              <div className="leading-relaxed" style={{ color: "#101434" }}>
                 {section.id === "ecouter" && (
                   <p>
                     Savoir écouter, c’est offrir à l’autre un espace où il se
@@ -159,10 +173,8 @@ const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
   const handleTouchEnd = () => {
     cancelPress();
     if (!longPressTriggered.current && pressedSection.current) {
-      // 👉 tap court
       onLetterClick(pressedSection.current.id, true);
     } else if (isDragging && hoveredSection) {
-      // 👉 fin du défilement
       onLetterClick(hoveredSection.id, true);
     }
     setIsDragging(false);
@@ -192,10 +204,8 @@ const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
   const handleMouseUp = () => {
     cancelPress();
     if (!longPressTriggered.current && pressedSection.current) {
-      // 👉 clic court
       onLetterClick(pressedSection.current.id, true);
     } else if (isDragging && hoveredSection) {
-      // 👉 fin du défilement
       onLetterClick(hoveredSection.id, true);
     }
     setIsDragging(false);
@@ -227,12 +237,12 @@ const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
                   w-8 h-8 flex items-center justify-center text-sm font-bold
                   transition-all duration-300 ease-in-out rounded-lg select-none
                   ${isHovered && !isSelected ? "opacity-0" : ""}
-                  ${
-                    isSelected
-                      ? "bg-pink-500 text-white shadow-lg"
-                      : "bg-white text-gray-600 hover:bg-pink-100 hover:text-pink-700 hover:shadow-sm"
-                  }
                 `}
+                style={{
+                  backgroundColor: isSelected ? "#6C0F26" : "#FFF5C2",
+                  color: isSelected ? "#FFF5C2" : "#101434",
+                  boxShadow: isSelected ? "0 4px 10px rgba(0,0,0,0.3)" : "none",
+                }}
               >
                 {section.letter}
               </button>
@@ -240,12 +250,16 @@ const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
               {showTooltip && (
                 <div
                   className={`
-                    absolute right-full mr-3 bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-3 py-1
-                    shadow-lg border border-gray-200 whitespace-nowrap z-10
+                    absolute right-full mr-3 bg-white bg-opacity-95 backdrop-blur-sm rounded-lg px-3 py-1
+                    shadow-lg border whitespace-nowrap z-10
                     transition-all duration-200 ease-in-out
                   `}
+                  style={{ borderColor: "#FFF5C2" }}
                 >
-                  <span className="text-sm font-medium text-gray-700">
+                  <span
+                    className="text-sm font-medium"
+                    style={{ color: "#6C0F26" }}
+                  >
                     {section.title}
                   </span>
                 </div>
