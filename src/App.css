@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Instrument+Serif:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 #root {
   margin: 0px;
   padding: 0px;
@@ -37,4 +39,12 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.button-serif {
+  font-family: 'DM Serif Text', 'Instrument Serif', serif;
+}
+
+.title-serif {
+  font-family: 'Instrument Serif', 'DM Serif Text', serif;
 }

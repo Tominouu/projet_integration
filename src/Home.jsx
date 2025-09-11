@@ -323,7 +323,7 @@ const MobileUnlockInterface = () => {
 
       {/* Effet parallaxe sur le contenu principal */}
       <div style={contentContainerStyle}>
-        <h1 style={titleStyle}>
+        <h1 className="title-serif" style={titleStyle}>
           Bordeaux à travers les visages
         </h1>
         
@@ -370,6 +370,7 @@ const MobileUnlockInterface = () => {
           
           <div style={buttonGroupStyle}>
             <button 
+              className="button-serif"
               style={primaryButtonStyle}
               onMouseEnter={(e) => {
                 e.target.style.backgroundColor = '#f3f4f6';
@@ -385,6 +386,7 @@ const MobileUnlockInterface = () => {
             </button>
             
             <button 
+              className="button-serif"
               onClick={reset}
               style={secondaryButtonStyle}
               onMouseEnter={(e) => {
