@@ -190,7 +190,7 @@ const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
                   transition-all duration-200 ease-out
                   ${
                     hoveredSection?.id === section.id || selectedSection?.id === section.id
-                      ? 'opacity-100 -translate-x-10'
+                      ? 'opacity-100 -translate-x-1'
                       : 'opacity-0'
                   }
                 `}
