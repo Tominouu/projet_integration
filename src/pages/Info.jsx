@@ -6,17 +6,20 @@ const EcouterCarousel = () => {
     {
       title: "Les quais",
       text: "Les quais de Bordeaux, « port de la Lune », mêlent mémoire des négociants et dockers d’hier aux joggeurs, cyclistes et promeneurs d’aujourd’hui. Lieu de passage et de vie, ils relient la ville à son fleuve et au monde.",
-      image: "https://www.sncf-connect.com/assets/styles/scale_max_width_961/public/media/2022-10/bordeaux-miroir-d-eau.jpg?itok=EF24q8ma",
+      image:
+        "https://www.sncf-connect.com/assets/styles/scale_max_width_961/public/media/2022-10/bordeaux-miroir-d-eau.jpg?itok=EF24q8ma",
     },
     {
       title: "La Garonne",
       text: "Fleuve puissant et imprévisible, la Garonne rythme Bordeaux par ses marées, ses crues et son mascaret. Elle relie l’histoire de la cité à l’estuaire et à l’océan.",
-      image: "https://www.bougerabordeaux.com/wp-content/uploads/2025/07/garonne-scaled-1.jpeg",
+      image:
+        "https://www.bougerabordeaux.com/wp-content/uploads/2025/07/garonne-scaled-1.jpeg",
     },
     {
       title: "Les capucins",
       text: "Le marché des Capucins, surnommé « le ventre de Bordeaux », vibre de voix, d’odeurs et de couleurs. C’est le rendez-vous populaire où se croisent maraîchers, habitants et voyageurs.",
-      image: "https://media.sudouest.fr/13081786/1000x625/sudouest-photo-1-32154012-1600.jpg?v=1700822902",
+      image:
+        "https://media.sudouest.fr/13081786/1000x625/sudouest-photo-1-32154012-1600.jpg?v=1700822902",
     },
   ];
 
@@ -55,15 +58,15 @@ const EcouterCarousel = () => {
       {/* Texte */}
       <div
         className="p-6 rounded-xl shadow-md"
-        style={{ backgroundColor: "#FF7497" }}
+        style={{ backgroundColor: "#6C0F26" }}
       >
         <h2
           className="text-2xl font-extrabold mb-3 tracking-wide"
-          style={{ color: "#6C0F26" }}
+          style={{ color: "#fff" }}
         >
           {slides[current].title}
         </h2>
-        <p className="text-base leading-relaxed" style={{ color: "#101434" }}>
+        <p className="text-base leading-relaxed" style={{ color: "#fff" }}>
           {slides[current].text}
         </p>
       </div>
@@ -95,10 +98,15 @@ const ScrollingAlphabet = () => {
 
   const sections = [
     { letter: "E", title: "Écouter", id: "ecouter", color: "#6C0F26" },
-    { letter: "C", title: "Connaître", id: "connaitre", color: "#101434" },
-    { letter: "C", title: "Comprendre", id: "comprendre", color: "#FF7497" },
-    { letter: "S", title: "Se comprendre", id: "se-comprendre", color: "#B58392" },
-    { letter: "C", title: "Communiquer", id: "communiquer", color: "#FFB347" },
+    { letter: "C", title: "Connaître", id: "connaitre", color: "#6C0F26" },
+    { letter: "C", title: "Comprendre", id: "comprendre", color: "#6C0F26" },
+    {
+      letter: "S",
+      title: "Se comprendre",
+      id: "se-comprendre",
+      color: "#6C0F26",
+    },
+    { letter: "C", title: "Communiquer", id: "communiquer", color: "#6C0F26" },
   ];
 
   const scrollToSection = (sectionId, smooth = true) => {
@@ -154,7 +162,10 @@ const ScrollingAlphabet = () => {
               {section.id === "ecouter" ? (
                 <EcouterCarousel />
               ) : (
-                <div className="leading-relaxed text-lg" style={{ color: "#101434" }}>
+                <div
+                  className="leading-relaxed text-lg"
+                  style={{ color: "#101434" }}
+                >
                   <p>
                     Ceci est un paragraphe d’exemple pour la section{" "}
                     <b>{section.title}</b>. Vous pouvez personnaliser ce texte
@@ -254,7 +265,10 @@ const AlphabetNavigation = ({ sections, onLetterClick }) => {
   };
 
   return (
-    <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50">
+    <div
+      className="fixed top-1/2 transform -translate-y-1/2 z-50"
+      style={{ right: "4px" }}
+    >
       <div
         ref={alphabetRef}
         className="flex flex-col items-center space-y-3 py-4 px-2"
