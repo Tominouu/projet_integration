@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import bckimg from "../assets/panorama.jpeg";
+import bckimg from "../assets/pano.png";
 
 // ------------------ CARROUSEL ÉCOUTER ------------------
 const EcouterCarousel = () => {
@@ -211,7 +211,8 @@ const PanoramaScroller = () => {
       ref={panoRef}
       className="w-full"
       style={{
-        height: "90vh",
+        width: "100%",
+        height: "300px",
         backgroundImage: `url(${bckimg})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
@@ -262,12 +263,6 @@ const ScrollingAlphabet = () => {
           >
             <div className="px-4">
               <div className="flex items-center mb-6">
-                <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4 shadow-md"
-                  style={{ backgroundColor: "#6C0F26" }}
-                >
-                  {section.letter}
-                </div>
                 <h2
                   className="text-3xl font-bold relative"
                   style={{ color: "#6C0F26" }}
