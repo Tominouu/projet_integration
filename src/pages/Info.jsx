@@ -61,8 +61,8 @@ const EcouterCarousel = () => {
         style={{ backgroundColor: "#6C0F26" }}
       >
         <h2
-          className="text-2xl font-extrabold mb-3 tracking-wide"
-          style={{ color: "#fff" }}
+          className="text-2xl font-extrabold mb-3 tracking-wide "
+          style={{ color: "#fff", fontFamily: "DM Serif Text" }}
         >
           {slides[current].title}
         </h2>
@@ -124,12 +124,12 @@ const ScrollingAlphabet = () => {
     <div className="min-h-screen" style={{ backgroundColor: "#FFEBD4" }}>
       <div className="max-w-4xl mx-auto px-6 py-12">
         <h1
-          className="text-4xl md:text-5xl font-extrabold text-center mb-16 relative"
-          style={{ color: "#6C0F26" }}
+          className="text-6xl md:text-5xl font-extrabold text-center mb-16 relative"
+          style={{ color: "#6C0F26", fontFamily: "Instrument Serif" }}
         >
           Guide de Communication
-          <span className="block w-32 h-1 bg-[#FF7497] mx-auto mt-4 rounded-full"></span>
         </h1>
+
 
         {sections.map((section) => (
           <section
