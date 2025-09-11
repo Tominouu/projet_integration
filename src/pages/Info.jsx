@@ -111,6 +111,77 @@ const EcouterCarousel = () => {
   );
 };
 
+// ------------------ CARROUSEL "SE COMPRENDRE" ------------------
+const SeComprendreCarousel = () => {
+  const slides = [
+    {
+      name: "Montesquieu",
+      text: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      image:
+        "https://www.worldhistory.org/uploads/images/18101.jpg",
+    },
+    {
+      name: "Michel de Montaigne",
+      text: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIOL_zZO0YOBpBSIMZOSpXps8hkTkPKVzMCw&s",
+    },
+    {
+      name: "Jacques Ellul",
+      text: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      image:
+        "https://img.mapado.net/2024/2/21/65d5b9bae09b5-jacques-ellul-un-homme-engage-jean-ellul.jpeg_thumbs/500-500.jpeg",
+    },
+  ];
+
+  const [current, setCurrent] = useState(0);
+
+  const prevSlide = () => {
+    setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+    setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  };
+
+  return (
+    <div className="max-w-md mx-auto">
+      {/* Carte affichée */}
+      <div className="bg-[#FFD9C0] rounded-2xl p-4 mb-6 shadow-md flex items-center space-x-4">
+        <img
+          src={slides[current].image}
+          alt={slides[current].name}
+          className="w-20 h-20 object-cover rounded-lg"
+        />
+        <div>
+          <h3 className="text-xl font-bold" style={{ color: "#6C0F26" }}>
+            {slides[current].name}
+          </h3>
+          <p className="text-sm text-gray-800">{slides[current].text}</p>
+        </div>
+      </div>
+
+      {/* Flèches */}
+      <div className="flex justify-between mt-4">
+        <button
+          onClick={prevSlide}
+          className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md hover:scale-110 transition"
+          style={{ backgroundColor: "#6C0F26" }}
+        >
+          ←
+        </button>
+        <button
+          onClick={nextSlide}
+          className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md hover:scale-110 transition"
+          style={{ backgroundColor: "#6C0F26" }}
+        >
+          →
+        </button>
+      </div>
+    </div>
+  );
+};
+
 // ------------------ PANORAMA CONNAÎTRE ------------------
 const PanoramaScroller = () => {
   const panoRef = useRef(null);
@@ -184,7 +255,11 @@ const ScrollingAlphabet = () => {
         </h1>
 
         {sections.map((section) => (
-          <section key={section.id} id={section.id} className="mb-20 scroll-mt-24">
+          <section
+            key={section.id}
+            id={section.id}
+            className="mb-20 scroll-mt-24"
+          >
             <div className="px-4">
               <div className="flex items-center mb-6">
                 <div
@@ -200,13 +275,17 @@ const ScrollingAlphabet = () => {
                   {section.title}
                 </h2>
               </div>
-
               {section.id === "ecouter" ? (
                 <EcouterCarousel />
               ) : section.id === "connaitre" ? (
                 <PanoramaScroller />
+              ) : section.id === "se-comprendre" ? (
+                <SeComprendreCarousel />
               ) : (
-                <div className="leading-relaxed text-lg" style={{ color: "#101434" }}>
+                <div
+                  className="leading-relaxed text-lg"
+                  style={{ color: "#101434" }}
+                >
                   <p>
                     Ceci est un paragraphe d’exemple pour la section{" "}
                     <b>{section.title}</b>. Vous pouvez personnaliser ce texte
@@ -326,8 +405,8 @@ const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
                 backgroundColor: isActive
                   ? "#6C0F26"
                   : isHovered
-                  ? "#8d2640ff"
-                  : "#FFF5C2",
+                  ? "#6C0F26"
+                  : "#ffffffff",
                 color: isActive || isHovered ? "#FFF5C2" : "#101434",
               }}
             >
