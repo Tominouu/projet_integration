@@ -51,7 +51,7 @@ const EcouterCarousel = () => {
 
   return (
     <div className="p-6 max-w-lg mx-auto">
-      {/* Image */}
+      {/* Image + swipe */}
       <div
         className="mb-4 relative"
         onTouchStart={handleTouchStart}
@@ -62,9 +62,9 @@ const EcouterCarousel = () => {
           src={slides[current].image}
           alt={slides[current].title}
           className="w-full h-56 object-cover rounded-2xl shadow-lg cursor-pointer"
-          onClick={nextSlide} // 👉 clic sur l’image = passe au suivant
+          onClick={nextSlide}
         />
-        {/* Indicateurs */}
+        {/* Indicateurs ronds */}
         <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
           {slides.map((_, idx) => (
             <span
@@ -90,7 +90,7 @@ const EcouterCarousel = () => {
         </p>
       </div>
 
-      {/* Flèches */}
+      {/* Flèches en dessous */}
       <div className="flex justify-between mt-6">
         <button
           onClick={prevSlide}
@@ -111,7 +111,6 @@ const EcouterCarousel = () => {
   );
 };
 
-
 // ------------------ PANORAMA CONNAÎTRE ------------------
 const PanoramaScroller = () => {
   const panoRef = useRef(null);
@@ -125,11 +124,11 @@ const PanoramaScroller = () => {
       ease: "none",
       scrollTrigger: {
         trigger: pano,
-        start: "center center", // l’image se centre dans la fenêtre
+        start: "center center",
         end: "+=2000",
         scrub: true,
-        pin: true,              // reste fixé
-        pinSpacing: true,       // laisse l’espace dans la page
+        pin: true,
+        pinSpacing: true,
       },
     });
 
@@ -150,7 +149,6 @@ const PanoramaScroller = () => {
     ></div>
   );
 };
-
 
 // ------------------ PAGE PRINCIPALE ------------------
 const ScrollingAlphabet = () => {
@@ -188,7 +186,6 @@ const ScrollingAlphabet = () => {
         {sections.map((section) => (
           <section key={section.id} id={section.id} className="mb-20 scroll-mt-24">
             <div className="px-4">
-              {/* Titre section */}
               <div className="flex items-center mb-6">
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4 shadow-md"
@@ -204,7 +201,6 @@ const ScrollingAlphabet = () => {
                 </h2>
               </div>
 
-              {/* Contenu spécifique */}
               {section.id === "ecouter" ? (
                 <EcouterCarousel />
               ) : section.id === "connaitre" ? (
@@ -223,7 +219,6 @@ const ScrollingAlphabet = () => {
         ))}
       </div>
 
-      {/* Navigation alphabet */}
       <AlphabetNavigation
         sections={sections}
         onLetterClick={scrollToSection}
@@ -233,13 +228,90 @@ const ScrollingAlphabet = () => {
   );
 };
 
-// ------------------ MENU ALPHABET ------------------
+// ------------------ MENU ALPHABET NIAGARA ------------------
 const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
   const [hoveredSection, setHoveredSection] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const alphabetRef = useRef(null);
+  const pressedSection = useRef(null);
+  const pressTimer = useRef(null);
+  const longPressTriggered = useRef(false);
+
+  useEffect(() => {
+    if (isDragging) {
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    };
+  }, [isDragging]);
+
+  const triggerHaptic = () => {
+    if (navigator.vibrate) {
+      navigator.vibrate(30);
+    }
+  };
+
+  const startPress = (section) => {
+    pressedSection.current = section;
+    pressTimer.current = setTimeout(() => {
+      longPressTriggered.current = true;
+      setIsDragging(true);
+      setHoveredSection(section);
+      triggerHaptic();
+    }, 300);
+  };
+
+  const cancelPress = () => clearTimeout(pressTimer.current);
+
+  const handleTouchStart = (e, section) => {
+    e.preventDefault();
+    longPressTriggered.current = false;
+    startPress(section);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging || !alphabetRef.current) return;
+    const touch = e.touches[0];
+    const rect = alphabetRef.current.getBoundingClientRect();
+    const relativeY = touch.clientY - rect.top;
+    const sectionHeight = 40;
+    const sectionIndex = Math.floor(relativeY / sectionHeight);
+    if (sectionIndex >= 0 && sectionIndex < sections.length) {
+      const newSection = sections[sectionIndex];
+      if (hoveredSection?.id !== newSection.id) {
+        setHoveredSection(newSection);
+        onLetterClick(newSection.id, false);
+        triggerHaptic();
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    cancelPress();
+    if (!longPressTriggered.current && pressedSection.current) {
+      onLetterClick(pressedSection.current.id, true);
+    } else if (isDragging && hoveredSection) {
+      onLetterClick(hoveredSection.id, true);
+    }
+    setIsDragging(false);
+    setHoveredSection(null);
+    pressedSection.current = null;
+  };
 
   return (
     <div className="fixed right-2 top-1/2 transform -translate-y-1/2 z-50">
-      <div className="flex flex-col items-center space-y-3 py-4 px-2">
+      <div
+        ref={alphabetRef}
+        className="flex flex-col items-center space-y-3 py-4 px-2"
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {sections.map((section) => {
           const isActive = selectedSection?.id === section.id;
           const isHovered = hoveredSection?.id === section.id;
@@ -247,15 +319,14 @@ const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
           return (
             <button
               key={section.id}
+              onTouchStart={(e) => handleTouchStart(e, section)}
               onClick={() => onLetterClick(section.id, true)}
-              onMouseEnter={() => setHoveredSection(section)}
-              onMouseLeave={() => setHoveredSection(null)}
               className="w-9 h-9 flex items-center justify-center text-base font-bold rounded-lg select-none transition-all duration-200"
               style={{
                 backgroundColor: isActive
                   ? "#6C0F26"
                   : isHovered
-                  ? "#FF7497"
+                  ? "#8d2640ff"
                   : "#FFF5C2",
                 color: isActive || isHovered ? "#FFF5C2" : "#101434",
               }}
