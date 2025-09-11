@@ -153,23 +153,23 @@ const AlphabetNavigation = ({ sections, onLetterClick, selectedSection }) => {
             </button>
             {(hoveredSection?.id === section.id ||
               selectedSection?.id === section.id) && (
-              <div
-                className={`
-                  absolute left-10 bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-3 py-1
-                  shadow-lg border border-gray-200 whitespace-nowrap z-10
-                  transition-all duration-200 ease-out
-                  ${
-                    hoveredSection?.id === section.id ||
-                    selectedSection?.id === section.id
-                      ? "opacity-100 -translate-x-1"
-                      : "opacity-0"
-                  }
-                `}
-              >
-                <span className="text-sm font-medium text-gray-700">
-                  {section.title}
-                </span>
-              </div>
+<div
+  className={`
+    absolute right-full mr-3 bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-3 py-1
+    shadow-lg border border-gray-200 whitespace-nowrap z-10
+    transition-all duration-200 ease-out
+    ${
+      hoveredSection?.id === section.id || selectedSection?.id === section.id
+        ? "opacity-100 translate-x-0"
+        : "opacity-0"
+    }
+  `}
+>
+  <span className="text-sm font-medium text-gray-700">
+    {section.title}
+  </span>
+</div>
+
             )}
           </div>
         ))}
