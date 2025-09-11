@@ -405,7 +405,7 @@ const MobileUnlockInterface = () => {
               lancer le quiz
             </button>
             <button 
-              onClick={reset}
+              onClick={() => navigate('/globe')}
               style={secondaryButtonStyle}
               onMouseEnter={e => {
                 // Prend l'apparence du bouton "clair"

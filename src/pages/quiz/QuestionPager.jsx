@@ -1,5 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+
 import '../../pages/styles/transitions.css'
+import '../styles/quiz-skin.css'
+import '../styles/quizglobal.css'
 
 // NOTES UTILES DOCU PAS SUPPR
 // Props:
@@ -15,6 +19,13 @@ export default function QuestionPager({ questionObj, onSubmit }) {
 
     if (!q) return <div>Aucune question</div>
 
+    useEffect(() => {
+        setSel([])
+    }, [q])
+
+    // Optional media above the answers if provided in the question JSON
+    const mediaSrc = q?.questionPic || q?.questionImage || q?.image || null
+
     const toggle = (i) => {
         const key = String(i + 1)
         if (multiple) {
@@ -28,7 +39,16 @@ export default function QuestionPager({ questionObj, onSubmit }) {
 
     return (
         <div className="fadeSlideIn">
-            <div className="quiz-q-title">{q.question}</div>
+            {mediaSrc && (
+                <div className="quiz-media" style={{ marginBottom: 12 }}>
+                    <img
+                        src={mediaSrc}
+                        alt=""
+                        loading="lazy"
+                        style={{ width: '100%', height: 'auto', borderRadius: 10, display: 'block' }}
+                    />
+                </div>
+            )}
             <div style={{ display: 'grid', gap: 10 }}>
                 {answers.map((a, i) => {
                     const key = String(i + 1)
@@ -44,13 +64,26 @@ export default function QuestionPager({ questionObj, onSubmit }) {
                     )
                 })}
             </div>
-            <div className="quiz-actions" style={{ marginTop: 12 }}>
-                <button className="quiz-next-fab" onClick={() => canSubmit && onSubmit?.(sel)} disabled={!canSubmit}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
-                        <path d="M1.78873e-07 15C8.01437e-08 23.2793 6.71079 30 15 30C23.2892 30 30 23.2892 30 15C30 6.71079 23.2892 2.77721e-07 15 1.78873e-07C6.71079 8.00253e-08 2.77721e-07 6.71079 1.78873e-07 15ZM16.3302 7.98147L22.6439 14.2952C23.0311 14.6823 23.0311 15.3077 22.6439 15.6949L16.3302 22.0086C15.9431 22.3958 15.3177 22.3958 14.9305 22.0086C14.5433 21.6214 14.5433 20.996 14.9305 20.6089L19.5566 15.9828L8.05096 15.9828C7.50496 15.9828 7.05824 15.5361 7.05824 14.9901C7.05824 14.4441 7.50496 13.9974 8.05096 13.9974L19.5566 13.9974L14.9305 9.37128C14.5433 8.98412 14.5433 8.35871 14.9305 7.97154C15.3177 7.58438 15.9431 7.58438 16.3302 7.97154L16.3302 7.98147Z" fill="#6C1227" />
+            <div className="quiz-actions">
+                <button
+                    className="quiz-next-fab"
+                    onClick={() => canSubmit && onSubmit?.(sel)}
+                    disabled={!canSubmit}
+                    aria-label="Question suivante"
+                    title="Question suivante"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" aria-hidden="true">
+                        <path d="M2.6831e-07 22.5C1.20216e-07 34.9189 10.0662 45 22.5 45C34.9338 45 45 34.9338 45 22.5C45 10.0662 34.9338 -1.16034e-06 22.5 -1.30861e-06C10.0662 -1.45688e-06 4.16582e-07 10.0662 2.6831e-07 22.5ZM24.4954 11.9722L33.9659 21.4428C34.5467 22.0235 34.5467 22.9616 33.9659 23.5424L24.4954 33.0129C23.9146 33.5936 22.9765 33.5936 22.3958 33.0129C21.815 32.4322 21.815 31.494 22.3958 30.9133L29.3349 23.9742L12.0764 23.9742C11.2574 23.9742 10.5874 23.3041 10.5874 22.4851C10.5874 21.6661 11.2574 20.996 12.0764 20.996L29.3349 20.996L22.3958 14.0569C21.815 13.4762 21.815 12.5381 22.3958 11.9573C22.9765 11.3766 23.9146 11.3766 24.4954 11.9573L24.4954 11.9722Z" fill="currentColor" />
                     </svg>
                 </button>
             </div>
-        </div>
+            <Link className="quiz-exit-fab" to="/choix" aria-label="Quitter" title="Quitter">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                    <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+            </Link>
+            
+        </div >
     )
 }
