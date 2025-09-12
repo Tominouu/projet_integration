@@ -178,10 +178,11 @@ const PanoramaScroller = () => {
       const endX = e.changedTouches[0].clientX;
       const diff = endX - startX;
 
-      if (Math.abs(diff) > 50) {
-        setShowPopup(true);
-        setTimeout(() => setShowPopup(false), 2500);
-      }
+if (Math.abs(diff) > 50) {
+  setShowPopup(true);
+  setTimeout(() => setShowPopup(false), 5000); // ⏱️ reste 5 secondes
+}
+
     };
 
     pano.addEventListener("touchstart", handleTouchStart);
