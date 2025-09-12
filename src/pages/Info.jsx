@@ -103,19 +103,19 @@ const SeComprendreCarousel = () => {
     const slides = [
         {
             name: "Montesquieu",
-            text: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            text: "Charles-Louis de Secondat, baron de Montesquieu (1689–1755), est un philosophe des Lumières étroitement lié à Bordeaux, sa ville natale. Issu d’une famille de magistrats, il hérite de la charge de président à mortier au parlement de Bordeaux, ce qui l’ancre dans la vie politique et judiciaire locale. Son œuvre majeure, De l’esprit des lois (1748), s’inspire en partie de ses observations sur les institutions bordelaises et la diversité des climats, qu’il relie à la théorie de la séparation des pouvoirs. Bordeaux, alors port dynamique ouvert sur le monde, influence sa réflexion sur le commerce, la liberté et la modération des gouvernements. Son héritage intellectuel reste marqué par cette double identité : penseur universel et enfant de la Garonne.",
             image:
                 "https://www.worldhistory.org/uploads/images/18101.jpg",
         },
         {
             name: "Michel de Montaigne",
-            text: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            text: "Michel de Montaigne (1533–1592), philosophe humaniste, fut maire de Bordeaux (1581–1585) et vécut près de la ville, dans son château de Périgord. C’est là qu’il écrivit ses Essais, mêlant observations locales et réflexions universelles. Bordeaux, centre intellectuel et politique, marqua sa pensée et son engagement pendant les guerres de Religion.",
             image:
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIOL_zZO0YOBpBSIMZOSpXps8hkTkPKVzMCw&s",
         },
         {
             name: "Jacques Ellul",
-            text: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            text: "Jacques Ellul (1912–1994), philosophe bordelais, est célèbre pour sa critique de la technique moderne et de son emprise sur la société. Professeur à l’université de Bordeaux, il dénonce dans ses œuvres (La Technique ou l’Enjeu du siècle) l’aliénation de l’homme par la technologie et la propagande. Son pensée, ancrée dans le contexte local, reste une référence en sociologie et écologie politique.",
             image:
                 "https://img.mapado.net/2024/2/21/65d5b9bae09b5-jacques-ellul-un-homme-engage-jean-ellul.jpeg_thumbs/500-500.jpeg",
         },
