@@ -1,7 +1,7 @@
 export const quiz = {
     quizTitle: "Deuxième Temps – Connaître",
     quizSynopsis: "Explore l’histoire médiévale et antique de Bordeaux, entre Aliénor d’Aquitaine, gladiateurs et intendant Tourny.",
-    progressBarColor: "#1B4965",
+    progressBarColor: "#6C1227",
     nrOfQuestions: "3",
     questions: [
         {

@@ -1,7 +1,7 @@
 export const quiz = {
     quizTitle: "Troisième Temps – Comprendre",
     quizSynopsis: "Souviens-toi des visages marqués par les guerres, l’esclavage et la mémoire : Modeste Testas, Sousa Mendes, Boris Cyrulnik…",
-    progressBarColor: "#2A6F4F",
+    progressBarColor: "#6C1227",
     nrOfQuestions: "3",
     questions: [
         {

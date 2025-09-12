@@ -1,7 +1,7 @@
 export const quiz = {
     quizTitle: "Cinquième Temps – Communiquer",
     quizSynopsis: "Bordeaux s’exprime par ses écrivains, artistes et penseurs : Mauriac, Montaigne, Redon, Goya, Rosa Bonheur…",
-    progressBarColor: "#005F73",
+    progressBarColor: "#6C1227",
     nrOfQuestions: "3",
     questions: [
         {
