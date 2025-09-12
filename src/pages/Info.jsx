@@ -159,8 +159,8 @@ const PanoramaScroller = () => {
       ref={panoRef}
       className="w-full"
       style={{
-        width: "100%",
-        height: "300px",
+        width: "auto",
+        height: "80vh",
         backgroundImage: `url(${bckimg})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
