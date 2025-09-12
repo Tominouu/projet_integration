@@ -133,104 +133,42 @@ const SeComprendreCarousel = () => {
 // ------------------ PANORAMA CONNAÎTRE ------------------
 const PanoramaScroller = () => {
     const panoRef = useRef(null);
-    const isDown = useRef(false);
-    const startX = useRef(0);
-    const scrollLeft = useRef(0); // on réutilise comme "translateX actuel"
-    const startTranslate = useRef(0);
 
     useEffect(() => {
-        const container = panoRef.current;
-        if (!container) return;
-        const inner = container.querySelector(".pano-inner");
-        if (!inner) return;
+        gsap.registerPlugin(ScrollTrigger);
+        const pano = panoRef.current;
 
-        // état initial
-        scrollLeft.current = 0;
-        inner.style.transform = `translateX(0px)`;
-        container.style.touchAction = "none"; // empêche le scroll natif sur mobile
+        gsap.to(pano, {
+            backgroundPosition: "100% center",
+            ease: "none",
+            scrollTrigger: {
+                trigger: pano,
+                start: "center center",
+                end: "+=2000",
+                scrub: true,
+                pin: true,
+                pinSpacing: true,
+            },
+        });
 
-        const getClientX = (e) => (e.touches ? e.touches[0].clientX : e.clientX);
-
-        const onPointerDown = (e) => {
-            isDown.current = true;
-            startX.current = getClientX(e);
-            startTranslate.current = scrollLeft.current;
-            container.style.cursor = "grabbing";
-            e.preventDefault?.();
-        };
-
-        const onPointerMove = (e) => {
-            if (!isDown.current) return;
-            const clientX = getClientX(e);
-            const delta = clientX - startX.current;
-            const innerW = inner.scrollWidth;
-            const contW = container.clientWidth;
-            const minTranslate = Math.min(0, contW - innerW); // valeur négative ou 0
-            let next = startTranslate.current + delta;
-            if (next > 0) next = 0;
-            if (next < minTranslate) next = minTranslate;
-            scrollLeft.current = next;
-            inner.style.transform = `translateX(${next}px)`;
-            e.preventDefault?.();
-        };
-
-        const endDrag = (e) => {
-            isDown.current = false;
-            container.style.cursor = "grab";
-        };
-
-        // Pointer events (desktop + modernes)
-        container.addEventListener("pointerdown", onPointerDown);
-        container.addEventListener("pointermove", onPointerMove);
-        container.addEventListener("pointerup", endDrag);
-        container.addEventListener("pointercancel", endDrag);
-        container.addEventListener("pointerleave", endDrag);
-
-        // Fallback touch (anciens navigateurs)
-        container.addEventListener("touchstart", onPointerDown, { passive: false });
-        container.addEventListener("touchmove", onPointerMove, { passive: false });
-        container.addEventListener("touchend", endDrag);
-
-        return () => {
-            container.removeEventListener("pointerdown", onPointerDown);
-            container.removeEventListener("pointermove", onPointerMove);
-            container.removeEventListener("pointerup", endDrag);
-            container.removeEventListener("pointercancel", endDrag);
-            container.removeEventListener("pointerleave", endDrag);
-
-            container.removeEventListener("touchstart", onPointerDown);
-            container.removeEventListener("touchmove", onPointerMove);
-            container.removeEventListener("touchend", endDrag);
-
-            container.style.touchAction = "";
-        };
+        return () => ScrollTrigger.getAll().forEach((t) => t.kill());
     }, []);
 
-    return (
-        <div
-            ref={panoRef}
-            className="w-full h-[80vh] overflow-hidden cursor-grab active:cursor-grabbing"
-            style={{ width: "100%" }}
-        >
-            <div
-                className="pano-inner"
-                style={{
-                    width: "200%",               // largeur > 100% pour pouvoir glisser
-                    height: "100%",
-                    backgroundImage: `url(${bckimg})`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "auto 100%",
-                    backgroundPosition: "left center",
-                    transform: "translateX(0px)",
-                }}
-            />
-        </div>
-    );
+  return (
+    <div
+      ref={panoRef}
+      className="w-full"
+      style={{
+        width: "auto",
+        height: "80vh",
+        backgroundImage: `url(${bckimg})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "0% center",
+      }}
+    ></div>
+  );
 };
-
-
-
-
 
 // ------------------ PAGE PRINCIPALE ------------------
 const ScrollingAlphabet = () => {
@@ -238,7 +176,8 @@ const ScrollingAlphabet = () => {
 
     const sections = [
         { letter: "E", title: "Écouter", id: "ecouter" },
-        { letter: "C", title: "Connaître et comprendre", id: "connaitre" },
+        { letter: "C", title: "Connaître", id: "connaitre" },
+        { letter: "C", title: "Comprendre", id: "comprendre" },
         { letter: "S", title: "Se comprendre", id: "se-comprendre" },
         { letter: "C", title: "Communiquer", id: "communiquer" },
     ];
