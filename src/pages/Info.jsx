@@ -155,24 +155,26 @@ const PanoramaScroller = () => {
       setStartX(e.clientX || e.touches?.[0]?.clientX);
     };
 
-    const handlePointerMove = (e) => {
-      if (!isDragging) return;
-      const currentX = e.clientX || e.touches?.[0]?.clientX;
-      const deltaX = currentX - startX;
+const handlePointerMove = (e) => {
+  if (!isDragging) return;
+  const currentX = e.clientX || e.touches?.[0]?.clientX;
+  const deltaX = currentX - startX;
 
-      const sensitivity = 0.1;
-      let newBgX = bgX + deltaX * sensitivity;
-      newBgX = Math.max(0, Math.min(100, newBgX));
+  const sensitivity = 0.3; // <-- vitesse augmentée
+  let newBgX = bgX - deltaX * sensitivity; // <-- inversion du sens
 
-      setBgX(newBgX);
-      gsap.to(pano, {
-        backgroundPosition: `${newBgX}% center`,
-        duration: 0.2,
-        ease: "power2.out",
-      });
+  newBgX = Math.max(0, Math.min(100, newBgX));
 
-      setStartX(currentX);
-    };
+  setBgX(newBgX);
+  gsap.to(pano, {
+    backgroundPosition: `${newBgX}% center`,
+    duration: 0.2,
+    ease: "power2.out",
+  });
+
+  setStartX(currentX);
+};
+
 
     const handlePointerUp = () => {
       setIsDragging(false);
