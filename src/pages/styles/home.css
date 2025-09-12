@@ -5,62 +5,66 @@
     --home-radius: 18px;
 }
 
- .home-root {
-     position: relative;
-     min-height: 100vh;
-     background: var(--home-bg);
-     color: var(--home-accent);
-     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-     overflow: hidden;
- }
- /* global bg image visible also after unlock */
- .home-root::before {
-     content: "";
-     position: fixed;
-     inset: 0;
-     background: url('../../assets/fond-home.jpg') center/cover no-repeat;
-     opacity: .18;
-     filter: brightness(.95) saturate(108%);
-     pointer-events: none;
-     transition: opacity .8s ease;
- }
- .home-root.is-unlocked::before { opacity: .28; }
+.home-root {
+    position: relative;
+    min-height: 100vh;
+    background: var(--home-bg);
+    color: var(--home-accent);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    overflow: hidden;
+}
+
+.home-root::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: url('../../assets/fond-home.jpg') center/cover no-repeat;
+    opacity: .18;
+    filter: brightness(.95) saturate(108%);
+    pointer-events: none;
+    transition: opacity .8s ease;
+}
+
+.home-root.is-unlocked::before {
+    opacity: .28;
+}
 
 .home-root.is-unlocked {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
 
- .home-lock {
-     position: fixed;
-     inset: 0;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     padding: 56px 20px 96px;
-     background: linear-gradient(160deg, #4b1223, #240810);
-     color: #fff;
-     z-index: 30;
-     transition: opacity .9s ease, transform .9s ease;
-     overflow: hidden;
- }
+.home-lock {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 56px 20px 96px;
+    background: linear-gradient(160deg, #4b1223, #240810);
+    color: #fff;
+    z-index: 30;
+    transition: opacity .9s ease, transform .9s ease;
+    overflow: hidden;
+}
 
- .home-lock::before {
-     content: "";
-     position: absolute;
-     inset: 0;
-     background: var(--home-lock-img, url('../../assets/fond-home.jpg')) center/cover no-repeat;
-     opacity: .55; /* more visible */
-     filter: brightness(.9) saturate(112%);
- }
+.home-lock::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--home-lock-img, url('../../assets/fond-home.jpg')) center/cover no-repeat;
+    opacity: .55;
+    /* more visible */
+    filter: brightness(.9) saturate(112%);
+}
 
- .home-lock::after {
-     content: "";
-     position: absolute;
-     inset: 0;
-     background: radial-gradient(circle at 50% 65%, rgba(255,255,255,.15), transparent 62%), linear-gradient(160deg, rgba(75,18,35,.92) 0%, rgba(36,8,16,.88) 85%);
-     opacity: .82;
- }
+.home-lock::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 65%, rgba(255, 255, 255, .15), transparent 62%), linear-gradient(160deg, rgba(75, 18, 35, .92) 0%, rgba(36, 8, 16, .88) 85%);
+    opacity: .82;
+}
 
 .home-lock>* {
     position: relative;
@@ -153,6 +157,9 @@
 .home-unlocked__inner {
     display: flex;
     flex-direction: column;
+    min-height: calc(100vh - 160px);
+    /* accounts for footer spacing */
+    justify-content: center;
     gap: 46px;
 }
 
@@ -194,8 +201,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 26px;
-    margin-top: 12px;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 0;
+    padding: 10px 0;
 }
 
 .home-ou {

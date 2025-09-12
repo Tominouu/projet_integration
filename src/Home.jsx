@@ -88,9 +88,9 @@ export default function Home() {
             <div className="home-ou">OU</div>
             <button className="home-btn home-btn--outline" onClick={() => nav('/infos')}>Plus d'infos</button>
           </section>
-          <footer className="home-foot"><small>&copy; {new Date().getFullYear()} Projet Intégration</small></footer>
         </div>
       </div>
+    <footer className="home-foot"><small>&copy; {new Date().getFullYear()} Projet Intégration</small></footer>
     </div>
   )
 }
