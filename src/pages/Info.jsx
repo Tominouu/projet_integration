@@ -1,11 +1,15 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
+import { Draggable } from "gsap/Draggable";
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import bckimg from '/frise.png'
 import '../pages/styles/quiz-skin.css'
 import './styles/home.css'
 import './styles/info.css'
+
+
+gsap.registerPlugin(ScrollTrigger, Draggable);
 
 const ExitFab = () => (
     <Link className="quiz-exit-fab" to="/" aria-label="Accueil" title="Accueil">
@@ -144,12 +148,13 @@ const SeComprendreCarousel = () => {
 // ------------------ PANORAMA CONNAÎTRE ------------------ 
 const PanoramaScroller = () => {
   const panoRef = useRef(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
     const pano = panoRef.current;
 
-    gsap.to(pano, {
+    // Animation au scroll
+    const scrollAnim = gsap.to(pano, {
       backgroundPosition: "100% center",
       ease: "none",
       scrollTrigger: {
@@ -162,26 +167,59 @@ const PanoramaScroller = () => {
       },
     });
 
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+    // Détection swipe horizontal
+    let startX = 0;
+
+    const handleTouchStart = (e) => {
+      startX = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = (e) => {
+      const endX = e.changedTouches[0].clientX;
+      const diff = endX - startX;
+
+      if (Math.abs(diff) > 50) {
+        setShowPopup(true);
+        setTimeout(() => setShowPopup(false), 2500);
+      }
+    };
+
+    pano.addEventListener("touchstart", handleTouchStart);
+    pano.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+      scrollAnim?.kill();
+      pano.removeEventListener("touchstart", handleTouchStart);
+      pano.removeEventListener("touchend", handleTouchEnd);
+    };
   }, []);
 
   return (
-    <div
-      ref={panoRef}
-      className="w-full"
-      style={{
-  width: "auto",
-  height: "80vh",
-  backgroundImage: `url(${bckimg})`,
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
-  backgroundPosition: "0% center",
-}}
+    <div className="relative w-full">
+      {/* Panorama */}
+      <div
+        ref={panoRef}
+        className="w-full"
+        style={{
+          width: "auto",
+          height: "80vh",
+          backgroundImage: `url(${bckimg})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "0% center",
+        }}
+      ></div>
 
-    ></div>
+      {/* Popup stylée */}
+      {showPopup && (
+        <div className="popup-toast">
+          Faites défiler vers le bas pour explorer 👇
+        </div>
+      )}
+    </div>
   );
 };
-
 
 
 // ------------------ PAGE PRINCIPALE ------------------
@@ -190,8 +228,7 @@ const ScrollingAlphabet = () => {
 
     const sections = [
         { letter: "E", title: "Écouter", id: "ecouter" },
-        { letter: "C", title: "Connaître", id: "connaitre" },
-        { letter: "C", title: "Comprendre", id: "comprendre" },
+        { letter: "C", title: "Connaître et comprendre", id: "connaitre" },
         { letter: "S", title: "Se comprendre", id: "se-comprendre" },
         { letter: "C", title: "Communiquer", id: "communiquer" },
     ];
@@ -217,7 +254,7 @@ const ScrollingAlphabet = () => {
                         {s.id === 'ecouter' ? <EcouterCarousel />
                             : s.id === 'connaitre' ? <PanoramaScroller />
                                 : s.id === 'se-comprendre' ? <SeComprendreCarousel />
-                                    : <p className="info-paragraph">Ceci est un paragraphe d’exemple pour la section <b>{s.title}</b>. Personnalisez ce texte.</p>}
+                                    : <p className="info-paragraph">Communiquer Bordeaux, c’est entendre celles et ceux qui l’ont racontée ou peinte, de Montaigne à Mauriac, de Goya à Rosa Bonheur. Entre musées, rues animées et murs graffés, la ville mêle mémoire et création, donnant à chaque époque une voix nouvelle.</p>}
                     </section>
                 ))}
                 <ExitFab />
