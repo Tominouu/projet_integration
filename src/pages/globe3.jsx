@@ -19,7 +19,7 @@ export default function GlobeViewer() {
             return;
         }
 
-        const panorama = new window.PANOLENS.ImagePanorama("/globe1.jpg");
+        const panorama = new window.PANOLENS.ImagePanorama("/globe3.jpg");
 
         const viewer = new window.PANOLENS.Viewer({
             container: containerRef.current,
@@ -33,7 +33,7 @@ export default function GlobeViewer() {
             window.PANOLENS.DataImage.Info
         );
         infospot.position.set(5000, 0, 0);
-        infospot.addHoverText("Fontaine des Trois Grâces");
+        infospot.addHoverText("Centre du Marché des Capucins");
         panorama.add(infospot);
 
         return () => {
