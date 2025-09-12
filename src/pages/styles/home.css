@@ -157,7 +157,10 @@
 }
 
 .home-hero {
-    text-align: left;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .home-hero__title {
@@ -170,9 +173,9 @@
 }
 
 .home-hero__bar {
-    height: 3px;
+    height: 2px;
     width: 100%;
-    max-width: 520px;
+    max-width: 340px;
     background: var(--home-accent-deep);
     margin: 0 0 28px;
     border-radius: 4px;
@@ -240,7 +243,7 @@
 }
 
 .home-btn--outline {
-    background: transparent;
+    background: #feeddc;
     color: var(--home-accent-deep);
     border-color: var(--home-accent-deep);
     box-shadow: 0 6px 18px -6px rgba(0, 0, 0, .35);
