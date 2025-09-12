@@ -1,0 +1,17 @@
+.pt-root { position:fixed; inset:0; pointer-events:none; z-index:400; display:grid; }
+.pt-cover { position:absolute; inset:0; background:#2a0713; animation:pt-cover-hide 640ms cubic-bezier(.7,.07,.18,.99) forwards 80ms; }
+.pt-entering .pt-cover { animation:pt-cover-show 640ms cubic-bezier(.7,.07,.18,.99) forwards 0ms; }
+.pt-layer { position:absolute; inset:0; transform:translateY(100%); animation:pt-slide 640ms cubic-bezier(.7,.07,.18,.99) forwards; }
+.pt-layer--1 { background:#3b0b19; animation-delay:0ms; }
+.pt-layer--2 { background:#60152c; animation-delay:60ms; }
+.pt-layer--3 { background:#8d2c49; animation-delay:120ms; }
+.pt-entering .pt-layer { animation-direction:reverse; }
+
+.pt-logo { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(.9); color:#FAEFE4; font-family:'DM Serif Text','Instrument Serif',serif; font-size:clamp(2.2rem,5vw,3.2rem); letter-spacing:.08em; opacity:0; animation:pt-logo 640ms ease forwards 90ms; text-shadow:0 4px 18px rgba(0,0,0,.35); }
+.pt-entering .pt-logo { animation:pt-logo-hide 640ms ease forwards 0ms; }
+
+@keyframes pt-slide { 0%{transform:translateY(100%)} 60%{transform:translateY(0)} 100%{transform:translateY(-101%)} }
+@keyframes pt-logo { 0%{opacity:0; transform:translate(-50%,-50%) scale(.9)} 40%{opacity:1} 70%{opacity:1} 100%{opacity:0; transform:translate(-50%,-50%) scale(1.04)} }
+@keyframes pt-logo-hide { 0%{opacity:0; transform:translate(-50%,-50%) scale(1.04)} 40%{opacity:1} 70%{opacity:1} 100%{opacity:0; transform:translate(-50%,-50%) scale(.9)} }
+@keyframes pt-cover-hide { 0%{opacity:1} 70%{opacity:1} 100%{opacity:0} }
+@keyframes pt-cover-show { 0%{opacity:1} 40%{opacity:1} 100%{opacity:0} }

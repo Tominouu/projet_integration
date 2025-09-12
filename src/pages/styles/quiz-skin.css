@@ -14,7 +14,6 @@ fichier en trop et en bordel mais blc
 .quiz-title { font-weight: 800; margin: 8px 0 4px; font-size: 24px; }
 .quiz-q-title { font-weight: 800; margin: 12px 0 12px; font-size: 20px; }
 
-/* Ensure wrapping to avoid side-scroll */
 .fadeSlideIn, .quiz-card, .quiz-wrap, .quiz-title, .quiz-q-title { overflow-wrap: anywhere; word-break: break-word; }
 img, svg, video { max-width: 100%; height: auto; }
 
@@ -22,7 +21,6 @@ img, svg, video { max-width: 100%; height: auto; }
 .btn-option + .btn-option { margin-top: 18px; }
 .btn-option.is-selected { background: #0f1534; color: var(--quiz-accent-contrast); border-color: #0f1534; }
 
-/* Space at bottom so floating buttons don’t overlap content */
 .fadeSlideIn { padding-bottom: 128px; }
 
 .quiz-next-fab,
@@ -39,7 +37,6 @@ img, svg, video { max-width: 100%; height: auto; }
 	cursor: pointer;
 	color: var(--quiz-accent);
 	-webkit-tap-highlight-color: transparent;
-	/* new stacking context so the halo sits behind the svg but above the page */
 	isolation: isolate;
 }
 .quiz-next-fab { right: 16px; }
@@ -59,7 +56,6 @@ img, svg, video { max-width: 100%; height: auto; }
 
 .quiz-actions { display: contents; }
 
-/* Blurred halo behind FABs */
 .quiz-next-fab::before,
 .quiz-exit-fab::before {
 	content: "";
@@ -67,7 +63,7 @@ img, svg, video { max-width: 100%; height: auto; }
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	width: 75px; /* slightly larger than the icon */
+	width: 75px;
 	height: 75px;
 	border-radius: 999px;
 	background: rgba(255, 255, 255, 0.6);

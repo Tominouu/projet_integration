@@ -1,444 +1,95 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import bgImage from './assets/fond-home.jpg';
+import React, { useState, useRef, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
+import bgImage from './assets/fond-home.jpg'
+import './pages/styles/home.css'
 
-const MobileUnlockInterface = () => {
-  const [isUnlocked, setIsUnlocked] = useState(false);
-  const [dragY, setDragY] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [showContent, setShowContent] = useState(false);
-  const containerRef = useRef(null);
-  const startY = useRef(0);
-  const currentY = useRef(0);
-  const navigate = useNavigate();
+const UNLOCK_THRESHOLD = -140 //en px ig
 
-  // Image de fond modifiable
-  const backgroundImage = bgImage;
-
-  const UNLOCK_THRESHOLD = -150; // Distance minimale pour déverrouiller
+export default function Home() {
+  const [unlocked, setUnlocked] = useState(false)
+  const [dragY, setDragY] = useState(0)
+  const startY = useRef(null)
+  const dragging = useRef(false)
+  const nav = useNavigate()
 
   useEffect(() => {
-    // Empêcher le scroll de la page
-    document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.margin = '0px';
-    document.body.style.padding = '0px';
-    
-    // Vibration tactile si supportée
-    const vibrate = () => {
-      if ('vibrate' in navigator) {
-        navigator.vibrate(50);
-      }
-    };
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = prevOverflow }
+  }, [])
 
-    if (isUnlocked) {
-      vibrate();
-      setTimeout(() => setShowContent(true), 300);
-    }
-
-    return () => {
-      // Nettoyer au démontage
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-    };
-  }, [isUnlocked]);
-
-  const handleTouchStart = (e) => {
-    if (isUnlocked) return;
-    
-    setIsDragging(true);
-    startY.current = e.touches[0].clientY;
-    currentY.current = e.touches[0].clientY;
-  };
-
-  const handleTouchMove = (e) => {
-    if (!isDragging || isUnlocked) return;
-    
-    e.preventDefault();
-    currentY.current = e.touches[0].clientY;
-    const deltaY = currentY.current - startY.current;
-    
-    // Limiter le drag uniquement vers le haut
-    if (deltaY < 0) {
-      setDragY(deltaY);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    if (!isDragging || isUnlocked) return;
-    
-    setIsDragging(false);
-    
+  const finish = useCallback(() => {
+    if (!dragging.current) return
+    dragging.current = false
     if (dragY <= UNLOCK_THRESHOLD) {
-      // Déverrouillage réussi
-      setIsUnlocked(true);
-      setDragY(0);
-    } else {
-      // Animation de retour avec effet spring
-      setDragY(0);
-    }
-  };
+      setUnlocked(true)
+      setDragY(0)
+      if ('vibrate' in navigator) navigator.vibrate(30)
+    } else setDragY(0)
+  }, [dragY])
 
-  const handleMouseStart = (e) => {
-    if (isUnlocked) return;
-    
-    setIsDragging(true);
-    startY.current = e.clientY;
-    currentY.current = e.clientY;
-  };
+  const onMove = useCallback((clientY) => {
+    if (!dragging.current || unlocked) return
+    const delta = clientY - startY.current
+    if (delta < 0) setDragY(delta)
+  }, [unlocked])
 
-  const handleMouseMove = (e) => {
-    if (!isDragging || isUnlocked) return;
-    
-    currentY.current = e.clientY;
-    const deltaY = currentY.current - startY.current;
-    
-    if (deltaY < 0) {
-      setDragY(deltaY);
-    }
-  };
-
-  const handleMouseEnd = () => {
-    if (!isDragging || isUnlocked) return;
-    
-    setIsDragging(false);
-    
-    if (dragY <= UNLOCK_THRESHOLD) {
-      setIsUnlocked(true);
-      setDragY(0);
-    } else {
-      setDragY(0);
-    }
-  };
-
-  const reset = () => {
-    setIsUnlocked(false);
-    setShowContent(false);
-    setDragY(0);
-    setIsDragging(false);
-  };
-
-  const containerStyle = {
-    position: 'relative',
-    width: '100%',
-    height: '100vh',
-    overflow: 'hidden',
-    userSelect: 'none',
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundAttachment: 'fixed',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-  };
-
-  const overlayStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    opacity: isUnlocked ? 0.2 : 0.4,
-    transition: 'opacity 1s ease'
-  };
-
-  const contentContainerStyle = {
-    position: 'relative',
-    zIndex: 10,
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '0 2rem',
-    textAlign: 'center',
-    transform: `translateY(${dragY * 0.3}px) ${isUnlocked ? 'scale(0.95)' : 'scale(1)'}`,
-    transition: 'transform 0.7s ease-out'
-  };
-
-  const titleStyle = {
-    fontFamily: '"Instrument Serif", "DM Serif Text", serif',
-    fontSize: '2.5rem',
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: '1rem',
-    lineHeight: '1.2',
-    opacity: isUnlocked ? 0.7 : 1,
-    filter: isUnlocked ? 'blur(2px)' : 'blur(0px)',
-    transition: 'all 0.7s ease'
-  };
-
-  const subtitleStyle = {
-    fontFamily: '"Inter", sans-serif',
-    fontSize: '1.25rem',
-    color: 'rgba(255, 255, 255, 0.9)',
-    fontWeight: '300',
-    marginBottom: '4rem',
-    opacity: isUnlocked ? 0.5 : 1,
-    filter: isUnlocked ? 'blur(1px)' : 'blur(0px)',
-    transition: 'all 0.7s ease'
-  };
-
-  const buttonContainerStyle = {
-    position: 'relative',
-    transform: `translateY(${dragY}px)`,
-    transition: isDragging ? 'none' : 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-  };
-
-  const buttonStyle = {
-    width: '80px',
-    height: '80px',
-    backgroundColor: `rgba(255, 255, 255, ${1 - Math.abs(dragY) / 300})`,
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)',
-    transform: isDragging ? 'scale(1.1)' : 'scale(1)',
-    opacity: isUnlocked ? 0 : 1,
-    transition: 'all 0.3s ease-out',
-    border: 'none'
-  };
-
-  const iconStyle = {
-    width: '24px',
-    height: '24px',
-    color: '#374151',
-    transform: `translateY(${Math.min(Math.abs(dragY) / 10, 8)}px) rotate(${Math.abs(dragY) / 2}deg)`,
-    transition: 'transform 0.3s ease'
-  };
-
-  const indicatorStyle = {
-    position: 'absolute',
-    bottom: '-2rem',
-    left: '50%',
-    transform: `translateX(-50%) scale(${isDragging ? 1.1 : 1})`,
-    color: 'white',
-    fontSize: '0.875rem',
-    fontWeight: '500',
-    opacity: isDragging ? 1 : 0.5,
-    transition: 'all 0.3s ease'
-  };
-
-  const unlockedContentStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 20,
-    background: 'linear-gradient(135deg, #6C0F26 20%, #FFF5C2 100%)',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    padding: '0 2rem',
-    opacity: showContent ? 1 : 0,
-    transform: showContent ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)',
-    pointerEvents: showContent ? 'auto' : 'none',
-    transition: 'all 1s ease-out'
-  };
-
-  // Ajoute ce style :
-  const glassContainerStyle = {
-    background: 'rgba(255, 245, 194, 0.5)',
-    borderRadius: '2rem',
-    boxShadow: '0 8px 32px 0 rgba(40, 40, 40, 0.37)',
-    backdropFilter: 'blur(12px)',
-    WebkitBackdropFilter: 'blur(12px)',
-    border: 'Opx',
-    padding: '2.5rem 2rem',
-    maxWidth: '400px',
-    margin: '0 auto'
-  };
-
-  const unlockedTitleStyle = {
-    fontFamily: '"DM Serif Text", serif', // Modifié ici
-    fontSize: '1.875rem',
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: '1rem'
-  };
-
-  const unlockedTextStyle = {
-    fontFamily: '"Inter", sans-serif',
-    color: 'rgba(255, 255, 255, 0.9)',
-    fontSize: '1.125rem',
-    marginBottom: '2rem',
-    lineHeight: '1.6'
-  };
-
-  const buttonGroupStyle = {
-    display: 'flex',
-    gap: '1rem',
-  };
-
-  const primaryButtonStyle = {
-    width: '100%',
-    backgroundColor: '#6C0F26',
-    color: 'white',
-    fontWeight: '900', // Épaissir le texte
-    padding: '1rem 2rem',
-    borderRadius: '1rem',
-    border: 'none',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    fontSize: '0.8rem',
-    fontFamily: '"Instrument Serif", serif',
-    letterSpacing: '0.03em' // Optionnel pour accentuer l'effet
-  };
-
-  const secondaryButtonStyle = {
-    width: '100%',
-    backgroundColor: '#6C0F26',
-    color: 'white',
-    fontWeight: '900', // Épaissir le texte
-    padding: '0.75rem 2rem',
-    borderRadius: '1rem',
-    border: 'none',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    fontSize: '0.8rem',
-    fontFamily: '"Instrument Serif", serif',
-    letterSpacing: '0.03em' // Optionnel pour accentuer l'effet
-  };
-
-  const indicatorsStyle = {
-    position: 'absolute',
-    bottom: '2rem',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    display: 'flex',
-    gap: '0.5rem'
-  };
-
-  const dotStyle = (i) => ({
-    width: '8px',
-    height: '8px',
-    borderRadius: '50%',
-    backgroundColor: showContent ? 'white' : 'rgba(255, 255, 255, 0.5)',
-    opacity: isDragging ? 1 : 0.7,
-    animationDelay: `${i * 0.1}s`,
-    transition: 'all 0.5s ease'
-  });
+  const onPointerDown = (e) => {
+    if (unlocked) return
+    dragging.current = true
+    startY.current = e.clientY ?? e.touches?.[0]?.clientY
+  }
+  const onPointerMove = (e) => {
+    const y = e.clientY ?? (e.touches && e.touches[0]?.clientY)
+    if (y != null) onMove(y)
+  }
+  const onPointerUp = () => finish()
 
   return (
-    <div 
-      ref={containerRef}
-      style={containerStyle}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      onMouseDown={handleMouseStart}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseEnd}
-      onMouseLeave={handleMouseEnd}
-    >
-      {/* Overlay sombre */}
-      <div style={overlayStyle} />
-
-      {/* Effet parallaxe sur le contenu principal */}
-      <div style={contentContainerStyle}>
-        <h1 style={titleStyle}>
-          Bordeaux à travers les visages
-        </h1>
-        
-        <p style={subtitleStyle}>
-          Entrez dans l'expérience
-        </p>
-
-        {/* Bouton de déverrouillage */}
-        <div style={buttonContainerStyle}>
-          <div style={buttonStyle}>
-            <svg 
-              style={iconStyle}
-              viewBox="0 0 24 24" 
-              fill="none"
-            >
-              <path 
-                d="M7 14L12 9L17 14" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-          
-          {/* Indicateur de progression */}
-          <div style={indicatorStyle}>
-            {isDragging ? 'Encore' : 'Swipe'}
+    <div className={'home-root' + (unlocked ? ' is-unlocked' : '')}>
+      <div
+        className={'home-lock' + (unlocked ? ' home-lock--out' : '')}
+        onMouseDown={onPointerDown}
+        onMouseMove={onPointerMove}
+        onMouseUp={onPointerUp}
+        onMouseLeave={onPointerUp}
+        onTouchStart={onPointerDown}
+        onTouchMove={onPointerMove}
+        onTouchEnd={onPointerUp}
+        role="button"
+        aria-label="Glisser vers le haut pour entrer"
+      >
+        <div className="home-lock__content" style={{ transform: `translateY(${dragY * 0.25}px)` }}>
+          <h1 className="home-lock__title">Bordeaux visage</h1>
+          <p className="home-lock__sub">Glisse vers le haut pour entrer</p>
+          <div className="home-lock__btn-wrap" style={{ transform: `translateY(${dragY}px)` }}>
+            <div className="home-lock__btn">
+              <svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true" style={{ transform: `translateY(${Math.min(12, Math.abs(dragY)/10)}px)` }}>
+                <path d="M7 14L12 9L17 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div className="home-lock__hint">{dragY <= UNLOCK_THRESHOLD ? 'Relâche' : 'Swipe'}</div>
           </div>
         </div>
       </div>
 
-      {/* Contenu déverrouillé */}
-      <div style={unlockedContentStyle}>
-        <div style={glassContainerStyle}>
-          <h2 style={unlockedTitleStyle}>
-            CHOISIR UNE OPTION
-          </h2>
-          <div style={buttonGroupStyle}>
-            <button 
-              style={primaryButtonStyle}
-              onMouseEnter={e => {
-                // Prend l'apparence du bouton "clair"
-                e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
-                e.target.style.color = '#6C0F26';
-                e.target.style.transform = 'scale(1.05)';
-                e.target.style.fontFamily = '"Instrument Serif", serif';
-                e.target.style.boxShadow = '0 8px 32px 0 rgba(40, 40, 40, 0.37)';
-              }}
-              onMouseLeave={e => {
-                // Reprend l'apparence bordeaux
-                e.target.style.backgroundColor = '#6C0F26';
-                e.target.style.color = 'white';
-                e.target.style.transform = 'scale(1)';
-                e.target.style.fontFamily = '"Instrument Serif", serif';
-              }}
-              onClick={() => navigate('/choix')}
-            >
-              lancer le quiz
-            </button>
-            <button 
-              onClick={() => navigate('/globe')}
-              style={secondaryButtonStyle}
-              onMouseEnter={e => {
-                // Prend l'apparence du bouton "clair"
-                e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
-                e.target.style.color = '#6C0F26';
-                e.target.style.transform = 'scale(1.05)';
-                e.target.style.fontFamily = '"Instrument Serif", serif';
-                e.target.style.boxShadow = '0 8px 32px 0 rgba(40, 40, 40, 0.37)';
-              }}
-              onMouseLeave={e => {
-                // Reprend l'apparence bordeaux
-                e.target.style.backgroundColor = '#6C0F26';
-                e.target.style.color = 'white';
-                e.target.style.transform = 'scale(1)';
-                e.target.style.fontFamily = '"Instrument Serif", serif';
-              }}
-            >
-              + d'infos
-            </button>
-          </div>
+      <div className={'home-unlocked' + (unlocked ? ' home-unlocked--in' : '')}>
+        <div className="home-unlocked__inner">
+          <header className="home-hero">
+            <h1 className="home-hero__title">Bordeaux visage</h1>
+            <div className="home-hero__bar" />
+            {/* <img src={bgImage} alt="Rue de Bordeaux" className="home-hero__img" loading="lazy" /> */}
+          </header>
+          <section className="home-actions" aria-label="Actions principales">
+            <button className="home-btn home-btn--primary" onClick={() => nav('/quizglobal')}>Passer au quiz</button>
+            <div className="home-ou">OU</div>
+            <button className="home-btn home-btn--outline" onClick={() => nav('/globe')}>Globe interactif</button>
+            <div className="home-ou">OU</div>
+            <button className="home-btn home-btn--outline" onClick={() => nav('/infos')}>Plus d'infos</button>
+          </section>
         </div>
       </div>
-
-      {/* Indicateurs visuels */}
-      <div style={indicatorsStyle}>
-        {[...Array(3)].map((_, i) => (
-          <div
-            key={i}
-            style={dotStyle(i)}
-          />
-        ))}
-      </div>
+    <footer className="home-foot"><small>&copy; {new Date().getFullYear()} Projet Intégration</small></footer>
     </div>
-  );
-};
-
-export default MobileUnlockInterface;
+  )
+}

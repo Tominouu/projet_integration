@@ -64,7 +64,7 @@ export default function Resultats() {
                 ))}
 
                 <div className="quiz-actions" style={{ marginTop: 16 }}>
-                    <Link className="link-btn" to="/choix">↩ Retour</Link>
+                    <Link className="link-btn" to="/">Retour</Link>
                 </div>
             </div>
         </div>
