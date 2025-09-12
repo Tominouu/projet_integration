@@ -23,18 +23,21 @@ const EcouterCarousel = () => {
             text: "Les quais de Bordeaux, « port de la Lune », mêlent mémoire des négociants et dockers d’hier aux joggeurs, cyclistes et promeneurs d’aujourd’hui.",
             image:
                 "https://www.sncf-connect.com/assets/styles/scale_max_width_961/public/media/2022-10/bordeaux-miroir-d-eau.jpg?itok=EF24q8ma",
+            link: "/globe1"
         },
         {
             title: "La Garonne",
             text: "Fleuve puissant et imprévisible, la Garonne rythme Bordeaux par ses marées, ses crues et son mascaret.",
             image:
                 "https://www.bougerabordeaux.com/wp-content/uploads/2025/07/garonne-scaled-1.jpeg",
+            link: "/globe2"
         },
         {
             title: "Les capucins",
             text: "Le marché des Capucins, surnommé « le ventre de Bordeaux », vibre de voix, d’odeurs et de couleurs.",
             image:
                 "https://media.sudouest.fr/13081786/1000x625/sudouest-photo-1-32154012-1600.jpg?v=1700822902",
+            link: "/globe3"
         },
     ];
 
@@ -66,15 +69,23 @@ const EcouterCarousel = () => {
 
         return (
             <div className="info-card">
-                        <div className="info-carousel" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
-                            <img key={current} src={slides[current].image} alt={slides[current].title} className={`info-img ${dir===1?'anim-next':'anim-prev'}`} onClick={nextSlide} />
+                <div className="info-carousel" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+                    <Link to={slides[current].link}>
+                        <img
+                            key={current}
+                            src={slides[current].image}
+                            alt={slides[current].title}
+                            className={`info-img ${dir === 1 ? 'anim-next' : 'anim-prev'}`}
+                            style={{ cursor: 'pointer' }}
+                        />
+                    </Link>
                     <div className="info-dots">
                         {slides.map((_, i) => <span key={i} className={i === current ? 'dot dot--active' : 'dot'} />)}
                     </div>
                 </div>
-                        <div key={current+ '-t'} className={`info-text ${dir===1?'anim-next':'anim-prev'}`}>
-                            <h3>{slides[current].title}</h3>
-                            <p>{slides[current].text}</p>
+                <div key={current + '-t'} className={`info-text ${dir === 1 ? 'anim-next' : 'anim-prev'}`}>
+                    <h3>{slides[current].title}</h3>
+                    <p>{slides[current].text}</p>
                 </div>
                 <div className="info-arrows">
                     <button onClick={prevSlide} aria-label="Précédent">←</button>
