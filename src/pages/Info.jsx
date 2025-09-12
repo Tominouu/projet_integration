@@ -213,11 +213,13 @@ if (Math.abs(diff) > 50) {
       ></div>
 
       {/* Popup stylée */}
-      {showPopup && (
-        <div className="popup-toast">
-          Faites défiler vers le bas pour explorer 👇
-        </div>
-      )}
+      {/* Popup FIXÉE à l’écran */}
+{showPopup && (
+  <div className="popup-toast-fixed">
+    Faites défiler vers le bas pour explorer 👇
+  </div>
+)}
+
     </div>
   );
 };

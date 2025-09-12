@@ -11,9 +11,8 @@ body,
     width: 100%;
     height: 100%;
 }
-
-.popup-toast {
-  position: absolute;
+.popup-toast-fixed {
+  position: fixed; /* 👈 reste à l’écran même quand le pano disparaît */
   top: 1rem;
   left: 50%;
   transform: translateX(-50%);
@@ -24,9 +23,10 @@ body,
   font-size: 0.9rem;
   font-weight: 500;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  animation: fadeSlide 5s ease-in-out forwards; /* ⏱️ durée ajustée */
-  z-index: 50;
+  animation: fadeSlide 5s ease-in-out forwards;
+  z-index: 9999; /* 👈 au-dessus de tout */
 }
+
 
 @keyframes fadeSlide {
   0% { opacity: 0; transform: translate(-50%, -10px); }
