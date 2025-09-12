@@ -8,7 +8,7 @@ import { quiz as Q4 } from './quiz/jsons/source4.js'
 import { quiz as Q5 } from './quiz/jsons/source5.js'
 import { compareSelections, isMultiple, normalizeCorrectIndexes, toAnswerTexts } from './quiz/engine/utils'
 const emptyQuiz = (title) => ({ quizTitle: title, quizSynopsis: '', questions: [] })
-
+//
 import '../pages/styles/quizglobal.css'
 
 export default function QuizGlobal(){
