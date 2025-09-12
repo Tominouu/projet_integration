@@ -153,6 +153,9 @@ const PanoramaScroller = () => {
   useEffect(() => {
     const pano = panoRef.current;
 
+    // ⚡ QuickSetter pour performance → super fluide
+    const setBg = gsap.quickSetter(pano, "backgroundPosition", "string");
+
     const handlePointerDown = (e) => {
       isDragging.current = true;
       startX.current = e.clientX || e.touches?.[0]?.clientX;
@@ -168,13 +171,11 @@ const PanoramaScroller = () => {
       const speedFactor = 2; // augmente pour défiler plus vite
 
       let newBgX = startBgX.current - (deltaX / viewportWidth) * 100 * speedFactor;
-
-      // clamp entre 0 et 100
       newBgX = Math.max(0, Math.min(100, newBgX));
       bgX.current = newBgX;
 
-      // 🎯 Application directe, pas d'animation → super fluide
-      pano.style.backgroundPosition = `${newBgX}% center`;
+      // ⚡ appliqué instantanément avec GSAP
+      setBg(`${newBgX}% center`);
     };
 
     const handlePointerUp = () => {
