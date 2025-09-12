@@ -1,68 +1,48 @@
 export const quiz = {
-    "quizTitle": "React Quiz Component Demo",
-    "quizSynopsis": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim",
-    "progressBarColor": "#6C1227",
-    "nrOfQuestions": "4",
-    "questions": [
+    quizTitle: "Premier Temps – Écouter",
+    quizSynopsis: "Découvre Bordeaux par ses sons et ses saveurs, du marché des Capucins à la Garonne, entre marchandes, gabarres et canelés.",
+    progressBarColor: "#6C1227",
+    nrOfQuestions: "3",
+    questions: [
         {
-            "question": "How can you access the state of a component from inside of a member function?",
-            "questionType": "text",
-            "questionPic": "https://dummyimage.com/600x400/000/fff&text=X", // if you need to display Picture in Question
-            "answerSelectionType": "single",
-            "answers": [
-                "this.getState()",
-                "this.prototype.stateValue",
-                "this.state",
-                "this.values"
+            question: "Où se trouve le Marché des Capucins ?",
+            questionType: "text",
+            answerSelectionType: "single",
+            answers: [
+                "À proximité de la Gare Saint-Jean",
+                "Sur les quais de la Garonne",
+                "Près de la Place des Quinconces",
+                "À côté du Palais Gallien"
             ],
-            "correctAnswer": "3",
-            "messageForCorrectAnswer": "Correct answer. Good job.",
-            "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
-            "explanation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            "point": "20"
+            correctAnswer: "1",
+            messageForCorrectAnswer: "Bravo ! Le marché est à deux pas de la Gare Saint-Jean.",
+            messageForIncorrectAnswer: "Non, il se trouve près de la Gare Saint-Jean.",
+            point: "20"
         },
         {
-            "question": "ReactJS is developed by _____?",
-            "questionType": "text",
-            "answerSelectionType": "single",
-            "answers": [
-                "Google Engineers",
-                "Facebook Engineers"
-            ],
-            "correctAnswer": "2",
-            "messageForCorrectAnswer": "Correct answer. Good job.",
-            "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
-            "explanation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            "point": "20"
+            question: "Quel dessert emblématique est né grâce aux jaunes d’œufs inutilisés par les maîtres de chai ?",
+            questionType: "text",
+            answerSelectionType: "single",
+            answers: ["Le macaron", "Le canelé", "Le pastis landais", "Le millasson"],
+            correctAnswer: "2",
+            messageForCorrectAnswer: "Exact, le canelé est devenu l’un des symboles de Bordeaux !",
+            messageForIncorrectAnswer: "Mauvaise réponse, il s’agit du canelé.",
+            point: "20"
         },
         {
-            "question": "ReactJS is an MVC based framework?",
-            "questionType": "text",
-            "answerSelectionType": "single",
-            "answers": [
-                "True",
-                "False"
+            question: "Comment appelle-t-on le port de Bordeaux inscrit au patrimoine mondial ?",
+            questionType: "text",
+            answerSelectionType: "single",
+            answers: [
+                "Port des Chartrons",
+                "Port de la Lune",
+                "Port Saint-Jean",
+                "Port de la Bastide"
             ],
-            "correctAnswer": "2",
-            "messageForCorrectAnswer": "Correct answer. Good job.",
-            "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
-            "explanation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            "point": "10"
-        },
-        {
-            "question": "Which of the following concepts is/are key to ReactJS?",
-            "questionType": "text",
-            "answerSelectionType": "single",
-            "answers": [
-                "Component-oriented design",
-                "Event delegation model",
-                "Both of the above",
-            ],
-            "correctAnswer": "3",
-            "messageForCorrectAnswer": "Correct answer. Good job.",
-            "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
-            "explanation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            "point": "30"
-        },
+            correctAnswer: "2",
+            messageForCorrectAnswer: "Bien vu, Bordeaux est surnommée le Port de la Lune.",
+            messageForIncorrectAnswer: "Faux, il s’agit du Port de la Lune.",
+            point: "20"
+        }
     ]
 }
