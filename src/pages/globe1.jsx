@@ -36,7 +36,7 @@ export default function GlobeViewer() {
       window.PANOLENS.DataImage.Info
     );
     infospot.position.set(5000, 0, 0);
-    infospot.addHoverText("Tour Eiffel");
+    infospot.addHoverText("Fontaine des Trois Grâces");
     panorama.add(infospot);
 
     return () => {
