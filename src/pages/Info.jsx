@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import bckimg from "../assets/pano.png";
+import bckimg from "/frise.png";
 
 // ------------------ CARROUSEL ÉCOUTER ------------------
 const EcouterCarousel = () => {
@@ -211,8 +211,7 @@ const PanoramaScroller = () => {
       ref={panoRef}
       className="w-full"
       style={{
-        width: "100%",
-        height: "300px",
+        height: "70vh",
         backgroundImage: `url(${bckimg})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
