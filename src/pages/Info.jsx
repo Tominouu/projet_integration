@@ -199,20 +199,20 @@ const PanoramaScroller = () => {
     };
   }, [isDragging, startX, bgX]);
 
-  return (
-    <div
-      ref={panoRef}
-      className="w-full cursor-grab active:cursor-grabbing"
-      style={{
-        width: "auto",
-        height: "80vh",
-        backgroundImage: `url(${bckimg})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: `${bgX}% center`,
-      }}
-    ></div>
-  );
+return (
+  <div
+    ref={panoRef}
+    className="w-full cursor-grab active:cursor-grabbing"
+    style={{
+      width: "auto",
+      height: "80vh",
+      backgroundImage: `url(${bckimg})`,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "auto 100%",   // <-- au lieu de "cover"
+      backgroundPosition: `${bgX}% center`,
+    }}
+  ></div>
+);
 };
 
 
