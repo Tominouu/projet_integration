@@ -140,107 +140,80 @@ const SeComprendreCarousel = () => {
             </div>
         )
 };
-
-// ------------------ PANORAMA CONNAÎTRE ------------------
+// ------------------ PANORAMA CONNAÎTRE ------------------ 
 const PanoramaScroller = () => {
-    const panoRef = useRef(null);
-    const isDown = useRef(false);
-    const startX = useRef(0);
-    const scrollLeft = useRef(0); // on réutilise comme "translateX actuel"
-    const startTranslate = useRef(0);
+  const panoRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [bgX, setBgX] = useState(0);
 
-    useEffect(() => {
-        const container = panoRef.current;
-        if (!container) return;
-        const inner = container.querySelector(".pano-inner");
-        if (!inner) return;
+  useEffect(() => {
+    const pano = panoRef.current;
 
-        // état initial
-        scrollLeft.current = 0;
-        inner.style.transform = `translateX(0px)`;
-        container.style.touchAction = "none"; // empêche le scroll natif sur mobile
+    const handlePointerDown = (e) => {
+      setIsDragging(true);
+      setStartX(e.clientX || e.touches?.[0]?.clientX);
+    };
 
-        const getClientX = (e) => (e.touches ? e.touches[0].clientX : e.clientX);
+    const handlePointerMove = (e) => {
+      if (!isDragging) return;
+      const currentX = e.clientX || e.touches?.[0]?.clientX;
+      const deltaX = currentX - startX;
 
-        const onPointerDown = (e) => {
-            isDown.current = true;
-            startX.current = getClientX(e);
-            startTranslate.current = scrollLeft.current;
-            container.style.cursor = "grabbing";
-            e.preventDefault?.();
-        };
+      const sensitivity = 0.1;
+      let newBgX = bgX + deltaX * sensitivity;
+      newBgX = Math.max(0, Math.min(100, newBgX));
 
-        const onPointerMove = (e) => {
-            if (!isDown.current) return;
-            const clientX = getClientX(e);
-            const delta = clientX - startX.current;
-            const innerW = inner.scrollWidth;
-            const contW = container.clientWidth;
-            const minTranslate = Math.min(0, contW - innerW); // valeur négative ou 0
-            let next = startTranslate.current + delta;
-            if (next > 0) next = 0;
-            if (next < minTranslate) next = minTranslate;
-            scrollLeft.current = next;
-            inner.style.transform = `translateX(${next}px)`;
-            e.preventDefault?.();
-        };
+      setBgX(newBgX);
+      gsap.to(pano, {
+        backgroundPosition: `${newBgX}% center`,
+        duration: 0.2,
+        ease: "power2.out",
+      });
 
-        const endDrag = (e) => {
-            isDown.current = false;
-            container.style.cursor = "grab";
-        };
+      setStartX(currentX);
+    };
 
-        // Pointer events (desktop + modernes)
-        container.addEventListener("pointerdown", onPointerDown);
-        container.addEventListener("pointermove", onPointerMove);
-        container.addEventListener("pointerup", endDrag);
-        container.addEventListener("pointercancel", endDrag);
-        container.addEventListener("pointerleave", endDrag);
+    const handlePointerUp = () => {
+      setIsDragging(false);
+    };
 
-        // Fallback touch (anciens navigateurs)
-        container.addEventListener("touchstart", onPointerDown, { passive: false });
-        container.addEventListener("touchmove", onPointerMove, { passive: false });
-        container.addEventListener("touchend", endDrag);
+    pano.addEventListener("pointerdown", handlePointerDown);
+    pano.addEventListener("pointermove", handlePointerMove);
+    pano.addEventListener("pointerup", handlePointerUp);
+    pano.addEventListener("pointerleave", handlePointerUp);
 
-        return () => {
-            container.removeEventListener("pointerdown", onPointerDown);
-            container.removeEventListener("pointermove", onPointerMove);
-            container.removeEventListener("pointerup", endDrag);
-            container.removeEventListener("pointercancel", endDrag);
-            container.removeEventListener("pointerleave", endDrag);
+    pano.addEventListener("touchstart", handlePointerDown);
+    pano.addEventListener("touchmove", handlePointerMove);
+    pano.addEventListener("touchend", handlePointerUp);
 
-            container.removeEventListener("touchstart", onPointerDown);
-            container.removeEventListener("touchmove", onPointerMove);
-            container.removeEventListener("touchend", endDrag);
+    return () => {
+      pano.removeEventListener("pointerdown", handlePointerDown);
+      pano.removeEventListener("pointermove", handlePointerMove);
+      pano.removeEventListener("pointerup", handlePointerUp);
+      pano.removeEventListener("pointerleave", handlePointerUp);
 
-            container.style.touchAction = "";
-        };
-    }, []);
+      pano.removeEventListener("touchstart", handlePointerDown);
+      pano.removeEventListener("touchmove", handlePointerMove);
+      pano.removeEventListener("touchend", handlePointerUp);
+    };
+  }, [isDragging, startX, bgX]);
 
-    return (
-        <div
-            ref={panoRef}
-            className="w-full h-[80vh] overflow-hidden cursor-grab active:cursor-grabbing"
-            style={{ width: "100%" }}
-        >
-            <div
-                className="pano-inner"
-                style={{
-                    width: "200%",               // largeur > 100% pour pouvoir glisser
-                    height: "100%",
-                    backgroundImage: `url(${bckimg})`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "auto 100%",
-                    backgroundPosition: "left center",
-                    transform: "translateX(0px)",
-                }}
-            />
-        </div>
-    );
+return (
+  <div
+    ref={panoRef}
+    className="w-full cursor-grab active:cursor-grabbing"
+    style={{
+      width: "auto",
+      height: "80vh",
+      backgroundImage: `url(${bckimg})`,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "auto 100%",   // <-- au lieu de "cover"
+      backgroundPosition: `${bgX}% center`,
+    }}
+  ></div>
+);
 };
-
-
-
 
 
 // ------------------ PAGE PRINCIPALE ------------------
@@ -249,7 +222,8 @@ const ScrollingAlphabet = () => {
 
     const sections = [
         { letter: "E", title: "Écouter", id: "ecouter" },
-        { letter: "C", title: "Connaître et comprendre", id: "connaitre" },
+        { letter: "C", title: "Connaître", id: "connaitre" },
+        { letter: "C", title: "Comprendre", id: "comprendre" },
         { letter: "S", title: "Se comprendre", id: "se-comprendre" },
         { letter: "C", title: "Communiquer", id: "communiquer" },
     ];
