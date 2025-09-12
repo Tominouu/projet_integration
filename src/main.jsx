@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import ReactDOM from "react-dom/client";
 import Home from "./Home";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { HashRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import './index.css'
 import Choix from "./pages/Choice.jsx";
 import Infos from "./pages/Info.jsx";
@@ -24,6 +24,8 @@ function RoutedApp(){
         <Route path="/infos" element={<Infos />} />
         <Route path="/quizglobal" element={<QuizGlobal />} />
         <Route path="/resultats" element={<Resultats />} />
+        {/* si chemin random redirige ver laccueil*/}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   )
@@ -31,8 +33,9 @@ function RoutedApp(){
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+  {/* remettre en browser route sinon, jsp si ça marche */}
+  <HashRouter>
       <RoutedApp />
-    </BrowserRouter>
+  </HashRouter>
   </StrictMode>,
 )
