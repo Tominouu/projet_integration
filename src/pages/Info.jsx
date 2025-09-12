@@ -140,44 +140,47 @@ const SeComprendreCarousel = () => {
             </div>
         )
 };
+
+
 // ------------------ PANORAMA CONNAÎTRE ------------------ 
 const PanoramaScroller = () => {
   const panoRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [bgX, setBgX] = useState(0);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const startBgX = useRef(0); // position du bg au moment du pointerdown
+  const bgX = useRef(0);
 
   useEffect(() => {
     const pano = panoRef.current;
 
     const handlePointerDown = (e) => {
-      setIsDragging(true);
-      setStartX(e.clientX || e.touches?.[0]?.clientX);
+      isDragging.current = true;
+      startX.current = e.clientX || e.touches?.[0]?.clientX;
+      startBgX.current = bgX.current;
     };
 
-const handlePointerMove = (e) => {
-  if (!isDragging) return;
-  const currentX = e.clientX || e.touches?.[0]?.clientX;
-  const deltaX = currentX - startX;
+    const handlePointerMove = (e) => {
+      if (!isDragging.current) return;
+      const currentX = e.clientX || e.touches?.[0]?.clientX;
+      const deltaX = currentX - startX.current;
 
-  const sensitivity = 0.3; // <-- vitesse augmentée
-  let newBgX = bgX - deltaX * sensitivity; // <-- inversion du sens
+      // déplacement proportionnel à la largeur de l’écran
+      const viewportWidth = window.innerWidth;
+      let newBgX = startBgX.current - (deltaX / viewportWidth) * 100;
 
-  newBgX = Math.max(0, Math.min(100, newBgX));
+      // clamp entre 0 et 100
+      newBgX = Math.max(0, Math.min(100, newBgX));
+      bgX.current = newBgX;
 
-  setBgX(newBgX);
-  gsap.to(pano, {
-    backgroundPosition: `${newBgX}% center`,
-    duration: 0.2,
-    ease: "power2.out",
-  });
-
-  setStartX(currentX);
-};
-
+      gsap.to(pano, {
+        backgroundPosition: `${newBgX}% center`,
+        duration: 0.1,
+        ease: "none",
+      });
+    };
 
     const handlePointerUp = () => {
-      setIsDragging(false);
+      isDragging.current = false;
     };
 
     pano.addEventListener("pointerdown", handlePointerDown);
@@ -199,22 +202,22 @@ const handlePointerMove = (e) => {
       pano.removeEventListener("touchmove", handlePointerMove);
       pano.removeEventListener("touchend", handlePointerUp);
     };
-  }, [isDragging, startX, bgX]);
+  }, []);
 
-return (
-  <div
-    ref={panoRef}
-    className="w-full cursor-grab active:cursor-grabbing"
-    style={{
-      width: "auto",
-      height: "80vh",
-      backgroundImage: `url(${bckimg})`,
-      backgroundRepeat: "no-repeat",
-      backgroundSize: "auto 100%",   // <-- au lieu de "cover"
-      backgroundPosition: `${bgX}% center`,
-    }}
-  ></div>
-);
+  return (
+    <div
+      ref={panoRef}
+      className="w-full cursor-grab active:cursor-grabbing"
+      style={{
+        width: "auto",
+        height: "80vh",
+        backgroundImage: `url(${bckimg})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "auto 100%",
+        backgroundPosition: `0% center`,
+      }}
+    ></div>
+  );
 };
 
 
