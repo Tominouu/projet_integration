@@ -1,4 +1,4 @@
-export const quizSe = {
+export const quiz = {
     quizTitle: "Quatrième Temps – Se comprendre",
     quizSynopsis: "Bordeaux questionne le droit, la liberté et le vivre-ensemble : de Montesquieu aux Girondins, de Jacques Ellul aux débats d’aujourd’hui.",
     progressBarColor: "#9B2226",
