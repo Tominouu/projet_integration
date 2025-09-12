@@ -140,46 +140,81 @@ const SeComprendreCarousel = () => {
             </div>
         )
 };
-
-// ------------------ PANORAMA CONNAÎTRE ------------------
+// ------------------ PANORAMA CONNAÎTRE ------------------ 
 const PanoramaScroller = () => {
-    const panoRef = useRef(null);
+  const panoRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [bgX, setBgX] = useState(0);
 
-    useEffect(() => {
-        gsap.registerPlugin(ScrollTrigger);
-        const pano = panoRef.current;
+  useEffect(() => {
+    const pano = panoRef.current;
 
-        gsap.to(pano, {
-            backgroundPosition: "100% center",
-            ease: "none",
-            scrollTrigger: {
-                trigger: pano,
-                start: "center center",
-                end: "+=2000",
-                scrub: true,
-                pin: true,
-                pinSpacing: true,
-            },
-        });
+    const handlePointerDown = (e) => {
+      setIsDragging(true);
+      setStartX(e.clientX || e.touches?.[0]?.clientX);
+    };
 
-        return () => ScrollTrigger.getAll().forEach((t) => t.kill());
-    }, []);
+    const handlePointerMove = (e) => {
+      if (!isDragging) return;
+      const currentX = e.clientX || e.touches?.[0]?.clientX;
+      const deltaX = currentX - startX;
+
+      const sensitivity = 0.1;
+      let newBgX = bgX + deltaX * sensitivity;
+      newBgX = Math.max(0, Math.min(100, newBgX));
+
+      setBgX(newBgX);
+      gsap.to(pano, {
+        backgroundPosition: `${newBgX}% center`,
+        duration: 0.2,
+        ease: "power2.out",
+      });
+
+      setStartX(currentX);
+    };
+
+    const handlePointerUp = () => {
+      setIsDragging(false);
+    };
+
+    pano.addEventListener("pointerdown", handlePointerDown);
+    pano.addEventListener("pointermove", handlePointerMove);
+    pano.addEventListener("pointerup", handlePointerUp);
+    pano.addEventListener("pointerleave", handlePointerUp);
+
+    pano.addEventListener("touchstart", handlePointerDown);
+    pano.addEventListener("touchmove", handlePointerMove);
+    pano.addEventListener("touchend", handlePointerUp);
+
+    return () => {
+      pano.removeEventListener("pointerdown", handlePointerDown);
+      pano.removeEventListener("pointermove", handlePointerMove);
+      pano.removeEventListener("pointerup", handlePointerUp);
+      pano.removeEventListener("pointerleave", handlePointerUp);
+
+      pano.removeEventListener("touchstart", handlePointerDown);
+      pano.removeEventListener("touchmove", handlePointerMove);
+      pano.removeEventListener("touchend", handlePointerUp);
+    };
+  }, [isDragging, startX, bgX]);
 
   return (
     <div
       ref={panoRef}
-      className="w-full"
+      className="w-full cursor-grab active:cursor-grabbing"
       style={{
         width: "auto",
         height: "80vh",
         backgroundImage: `url(${bckimg})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        backgroundPosition: "0% center",
+        backgroundPosition: `${bgX}% center`,
       }}
     ></div>
   );
 };
+
 
 // ------------------ PAGE PRINCIPALE ------------------
 const ScrollingAlphabet = () => {
