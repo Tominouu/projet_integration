@@ -24,7 +24,7 @@ const EcouterCarousel = () => {
     const slides = [
         {
             title: "Les quais",
-            text: "Les quais de Bordeaux, « port de la Lune », mêlent mémoire des négociants et dockers d’hier aux joggeurs, cyclistes et promeneurs d’aujourd’hui.",
+            text: "Les quais de Bordeaux, « port de la Lune », mêlent mémoire des négociants et dockers d’hier aux joggeurs, cyclistes et promeneurs d’aujourd’hui. Cliquez sur l'image pour les découvrir en 360° !",
             image:
                 "https://www.sncf-connect.com/assets/styles/scale_max_width_961/public/media/2022-10/bordeaux-miroir-d-eau.jpg?itok=EF24q8ma",
             link: "/globe1"
@@ -34,11 +34,10 @@ const EcouterCarousel = () => {
             text: "Fleuve puissant et imprévisible, la Garonne rythme Bordeaux par ses marées, ses crues et son mascaret.",
             image:
                 "https://www.bougerabordeaux.com/wp-content/uploads/2025/07/garonne-scaled-1.jpeg",
-            link: "/globe2"
         },
         {
             title: "Les capucins",
-            text: "Le marché des Capucins, surnommé « le ventre de Bordeaux », vibre de voix, d’odeurs et de couleurs.",
+            text: "Le marché des Capucins, surnommé « le ventre de Bordeaux », vibre de voix, d’odeurs et de couleurs. Cliquez sur l'image pour les découvrir en 360° !",
             image:
                 "https://media.sudouest.fr/13081786/1000x625/sudouest-photo-1-32154012-1600.jpg?v=1700822902",
             link: "/globe3"
