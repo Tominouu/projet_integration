@@ -83,9 +83,7 @@ export default function Home() {
           <section className="home-actions" aria-label="Actions principales">
             <button className="home-btn home-btn--primary" onClick={() => nav('/quizglobal')}>Passer au quiz</button>
             <div className="home-ou">OU</div>
-            <button className="home-btn home-btn--outline" onClick={() => nav('/globe')}>Globe interactif</button>
-            <div className="home-ou">OU</div>
-            <button className="home-btn home-btn--outline" onClick={() => nav('/infos')}>Plus d'infos</button>
+            <button className="home-btn home-btn--outline" onClick={() => nav('/infos')}>Informations</button>
           </section>
         </div>
       </div>

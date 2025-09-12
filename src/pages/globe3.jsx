@@ -19,7 +19,7 @@ export default function GlobeViewer() {
             return;
         }
 
-        const panorama = new window.PANOLENS.ImagePanorama("/globe1.jpg");
+        const panorama = new window.PANOLENS.ImagePanorama("/globe3.jpg");
 
         const viewer = new window.PANOLENS.Viewer({
             container: containerRef.current,
