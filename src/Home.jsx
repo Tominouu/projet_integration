@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import bgImage from './assets/fond-home.jpg'
-import './pages/styles/quizGlobal.css'
 import './pages/styles/home.css'
 
 const UNLOCK_THRESHOLD = -140 //en px ig
