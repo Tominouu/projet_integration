@@ -141,83 +141,47 @@ const SeComprendreCarousel = () => {
         )
 };
 
-
 // ------------------ PANORAMA CONNAÎTRE ------------------ 
 const PanoramaScroller = () => {
   const panoRef = useRef(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const startBgX = useRef(0);
-  const bgX = useRef(0);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     const pano = panoRef.current;
 
-    // ⚡ QuickSetter pour performance → super fluide
-    const setBg = gsap.quickSetter(pano, "backgroundPosition", "string");
+    gsap.to(pano, {
+      backgroundPosition: "100% center",
+      ease: "none",
+      scrollTrigger: {
+        trigger: pano,
+        start: "center center",
+        end: "+=2000",
+        scrub: true,
+        pin: true,
+        pinSpacing: true,
+      },
+    });
 
-    const handlePointerDown = (e) => {
-      isDragging.current = true;
-      startX.current = e.clientX || e.touches?.[0]?.clientX;
-      startBgX.current = bgX.current;
-    };
-
-    const handlePointerMove = (e) => {
-      if (!isDragging.current) return;
-      const currentX = e.clientX || e.touches?.[0]?.clientX;
-      const deltaX = currentX - startX.current;
-
-      const viewportWidth = window.innerWidth;
-      const speedFactor = 2; // augmente pour défiler plus vite
-
-      let newBgX = startBgX.current - (deltaX / viewportWidth) * 100 * speedFactor;
-      newBgX = Math.max(0, Math.min(100, newBgX));
-      bgX.current = newBgX;
-
-      // ⚡ appliqué instantanément avec GSAP
-      setBg(`${newBgX}% center`);
-    };
-
-    const handlePointerUp = () => {
-      isDragging.current = false;
-    };
-
-    pano.addEventListener("pointerdown", handlePointerDown);
-    pano.addEventListener("pointermove", handlePointerMove);
-    pano.addEventListener("pointerup", handlePointerUp);
-    pano.addEventListener("pointerleave", handlePointerUp);
-
-    pano.addEventListener("touchstart", handlePointerDown);
-    pano.addEventListener("touchmove", handlePointerMove);
-    pano.addEventListener("touchend", handlePointerUp);
-
-    return () => {
-      pano.removeEventListener("pointerdown", handlePointerDown);
-      pano.removeEventListener("pointermove", handlePointerMove);
-      pano.removeEventListener("pointerup", handlePointerUp);
-      pano.removeEventListener("pointerleave", handlePointerUp);
-
-      pano.removeEventListener("touchstart", handlePointerDown);
-      pano.removeEventListener("touchmove", handlePointerMove);
-      pano.removeEventListener("touchend", handlePointerUp);
-    };
+    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
 
   return (
     <div
       ref={panoRef}
-      className="w-full cursor-grab active:cursor-grabbing"
+      className="w-full"
       style={{
-        width: "auto",
-        height: "80vh",
-        backgroundImage: `url(${bckimg})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "auto 100%",
-        backgroundPosition: `0% center`,
-      }}
+  width: "auto",
+  height: "80vh",
+  backgroundImage: `url(${bckimg})`,
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
+  backgroundPosition: "0% center",
+}}
+
     ></div>
   );
 };
+
 
 
 // ------------------ PAGE PRINCIPALE ------------------
